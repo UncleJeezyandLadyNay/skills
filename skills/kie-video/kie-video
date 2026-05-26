@@ -1,0 +1,68 @@
+---
+name: kie-video
+description: Generate a video using the kie.ai API. Use when the user asks to generate, create, or make a video. Also use when the user invokes /kie-video directly.
+---
+
+Generate a video via the kie.ai Veo 3.1 API.
+
+## Step 1 — Parse arguments
+
+The user's args string is the video prompt. Accept these optional flags:
+- `--model <id>` — model to use (default: `veo3_fast`). Options: `veo3_fast`, `veo3`, `veo3_lite`
+- `--ratio <ratio>` — `16:9` or `9:16` (default: `16:9`)
+- `--duration <sec>` — 4, 6, or 8 seconds (default: `6`)
+- `--resolution <res>` — `720p`, `1080p`, `4k` (default: `720p`)
+- `--image <url>` — reference image URL(s) for image-to-video, up to 3 (can repeat)
+
+## Step 2 — Check API key
+
+Verify `KIE_API_KEY` is set. If not, tell the user to run: `export KIE_API_KEY=your_key_here`
+
+## Step 3 — Submit the task
+
+```bash
+curl -s -X POST https://api.kie.ai/api/v1/veo/generate \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $KIE_API_KEY" \
+  -d '{
+    "prompt": "<prompt>",
+    "model": "<model>",
+    "aspect_ratio": "<ratio>",
+    "duration": <duration>,
+    "resolution": "<resolution>"
+  }'
+```
+
+If `--image` was provided, add `"imageUrls": ["<url1>", ...]` to the request body.
+
+Parse the response. If `code` is not `200`, show `msg` and stop. Extract `data.taskId`.
+
+## Step 4 — Poll for completion
+
+Video generation takes 1–5 minutes. Poll every 15 seconds:
+
+```bash
+curl -s "https://api.kie.ai/api/v1/veo/record-info?taskId=<taskId>" \
+  -H "Authorization: Bearer $KIE_API_KEY"
+```
+
+`data.successFlag` values: `0` = generating, `1` = success, `2` = failed, `3` = generation failed
+
+Show elapsed time each cycle. If `successFlag` is `2` or `3`, show `data.errorMessage` and stop.
+
+## Step 5 — Return result
+
+When `successFlag` is `1`, extract `data.response.resultUrls[0]`.
+
+Display:
+- The video URL as a clickable markdown link
+- Model, duration, and resolution used
+- Task ID for reference
+
+Ask if the user wants to download locally. If yes:
+
+```bash
+curl -L -o ~/Downloads/"video-$(date +%Y%m%d-%H%M%S).mp4" "<video_url>"
+```
+
+Report the saved path.

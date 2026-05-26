@@ -1,0 +1,75 @@
+---
+name: kie-image
+description: Generate an image using the kie.ai API. Use when the user asks to generate, create, or make an image. Also use when the user invokes /kie-image directly.
+---
+
+Generate an image via the kie.ai API.
+
+## Step 1 — Parse arguments
+
+The user's args string is the image prompt. Accept these optional flags:
+- `--model <id>` — model to use (default: `nano-banana-2`)
+- `--ratio <ratio>` — aspect ratio (default: `16:9`). Options: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`
+- `--resolution <res>` — `1K`, `2K`, `4K` (default: `1K`)
+- `--format <fmt>` — `jpg` or `png` (default: `jpg`)
+- `--ref <url>` — reference image URL(s), up to 14 (can repeat)
+
+Available models:
+- `nano-banana-2` (default)
+- `seedream-v4` — Seedream v4 text-to-image
+- `flux-2/pro` — Flux 2 Pro
+- `gpt-image-2` — GPT Image 2
+
+## Step 2 — Check API key
+
+Verify `KIE_API_KEY` is set. If not, tell the user to run: `export KIE_API_KEY=your_key_here`
+
+## Step 3 — Submit the task
+
+```bash
+curl -s -X POST https://api.kie.ai/api/v1/jobs/createTask \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $KIE_API_KEY" \
+  -d '{
+    "model": "<model>",
+    "input": {
+      "prompt": "<prompt>",
+      "aspect_ratio": "<ratio>",
+      "resolution": "<resolution>",
+      "output_format": "<format>"
+    }
+  }'
+```
+
+If `--ref` was provided, add `"image_input": ["<url1>", ...]` to the `input` object.
+
+Parse the response JSON. If `code` is not `200`, show `msg` and stop. Extract `data.taskId`.
+
+## Step 4 — Poll for completion
+
+Poll every 8 seconds using:
+
+```bash
+curl -s "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=<taskId>" \
+  -H "Authorization: Bearer $KIE_API_KEY"
+```
+
+`data.state` values: `waiting` → `queuing` → `generating` → `success` / `fail`
+
+Show elapsed time each cycle. If `state` is `fail`, show `data.failMsg` and stop.
+
+## Step 5 — Return result
+
+When `state` is `success`, parse `data.resultJson` as JSON and extract `resultUrls[0]`.
+
+Display:
+- The image URL as a clickable markdown link
+- Task ID for reference
+
+Ask if the user wants to download locally. If yes:
+
+```bash
+curl -L -o ~/Downloads/"image-$(date +%Y%m%d-%H%M%S).jpg" "<image_url>"
+```
+
+Report the saved path.

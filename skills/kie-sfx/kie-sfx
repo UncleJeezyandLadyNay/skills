@@ -1,0 +1,66 @@
+---
+name: kie-sfx
+description: Generate a sound effect using Suno AI via the kie.ai API. Use when the user asks to generate, create, or make a sound effect or SFX. Also use when the user invokes /kie-sfx directly.
+---
+
+Generate a sound effect via the kie.ai Suno sounds API.
+
+## Step 1 — Parse arguments
+
+The user's args string is the sound description (e.g. "ancient stone door creaking open", "thunder crack with distant rumble"). Accept these optional flags:
+- `--model <version>` — Suno model (default: `V5_5`). Options: `V5`, `V5_5`
+- `--loop` — make the audio loop seamlessly (default: false)
+- `--tempo <bpm>` — tempo in BPM, 1–300 (default: omit)
+- `--key <key>` — musical key (e.g. `C`, `C#m`, `Dm`; default: `Any`)
+
+## Step 2 — Check API key
+
+Verify `KIE_API_KEY` is set. If not, tell the user to run: `export KIE_API_KEY=your_key_here`
+
+## Step 3 — Submit the task
+
+```bash
+curl -s -X POST https://api.kie.ai/api/v1/generate/sounds \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $KIE_API_KEY" \
+  -d '{
+    "prompt": "<description>",
+    "model": "<model>",
+    "soundLoop": <true|false>
+  }'
+```
+
+Include `"soundTempo": <bpm>` only if `--tempo` was provided. Include `"soundKey": "<key>"` only if `--key` was provided (omit for default `Any`).
+
+Parse the response. If `code` is not `200`, show `msg` and stop. Extract `data.taskId`.
+
+## Step 4 — Poll for completion
+
+Poll every 10 seconds:
+
+```bash
+curl -s "https://api.kie.ai/api/v1/generate/record-info?taskId=<taskId>" \
+  -H "Authorization: Bearer $KIE_API_KEY"
+```
+
+`data.status` values: `PENDING` → `FIRST_SUCCESS` → `SUCCESS`
+Failure states: `CREATE_TASK_FAILED`, `GENERATE_AUDIO_FAILED`, `SENSITIVE_WORD_ERROR`
+
+Show elapsed time each cycle. If status is a failure state, show `data.errorMessage` and stop.
+
+## Step 5 — Return result
+
+When `status` is `SUCCESS`, extract the audio URL from `data.response.sunoData[0].audioUrl`.
+
+Display:
+- The audio URL as a clickable link
+- Description and settings used
+- Task ID for reference
+
+Ask if the user wants to download locally. If yes:
+
+```bash
+curl -L -o ~/Downloads/"sfx-$(date +%Y%m%d-%H%M%S).mp3" "<audio_url>"
+```
+
+Report the saved path.

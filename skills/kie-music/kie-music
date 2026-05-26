@@ -1,0 +1,89 @@
+---
+name: kie-music
+description: Generate music using Suno AI via the kie.ai API. Use when the user asks to generate, create, or make music or background music. Also use when the user invokes /kie-music directly.
+---
+
+Generate music via the kie.ai Suno API.
+
+## Step 1 — Parse arguments
+
+The user's args string is the music description (used as `prompt`). Accept these optional flags:
+- `--model <version>` — Suno model (default: `V4_5`). Options: `V4`, `V4_5`, `V4_5PLUS`, `V4_5ALL`, `V5`, `V5_5`
+- `--style <tags>` — genre/style tags (e.g. `"dark ambient, cinematic"`) — activates custom mode
+- `--title <title>` — track title (required in custom mode)
+- `--vocals` — include vocals (default is instrumental)
+- `--avoid <tags>` — styles to exclude (negativeTags)
+
+### Modes
+- **Simple mode** (default): natural-language description as the prompt. Suno generates the music from it.
+- **Custom mode** (activated when `--style` is provided): supply explicit style tags for precise control. `--title` should also be provided.
+
+## Step 2 — Check API key
+
+Verify `KIE_API_KEY` is set. If not, tell the user to run: `export KIE_API_KEY=your_key_here`
+
+## Step 3 — Submit the task
+
+**Simple mode:**
+```bash
+curl -s -X POST https://api.kie.ai/api/v1/generate \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $KIE_API_KEY" \
+  -d '{
+    "prompt": "<description>",
+    "model": "<model>",
+    "customMode": false,
+    "instrumental": true
+  }'
+```
+
+**Custom mode** (when `--style` provided):
+```bash
+curl -s -X POST https://api.kie.ai/api/v1/generate \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $KIE_API_KEY" \
+  -d '{
+    "prompt": "<description>",
+    "style": "<tags>",
+    "title": "<title>",
+    "model": "<model>",
+    "customMode": true,
+    "instrumental": true,
+    "negativeTags": "<avoid>"
+  }'
+```
+
+Set `"instrumental": false` only if `--vocals` was passed. Omit `negativeTags` if `--avoid` was not provided. Omit `title` if not provided.
+
+Parse the response. If `code` is not `200`, show `msg` and stop. Extract `data.taskId`.
+
+## Step 4 — Poll for completion
+
+Music generation takes 30–120 seconds. Poll every 10 seconds:
+
+```bash
+curl -s "https://api.kie.ai/api/v1/generate/record-info?taskId=<taskId>" \
+  -H "Authorization: Bearer $KIE_API_KEY"
+```
+
+`data.status` values: `PENDING` → `TEXT_SUCCESS` → `FIRST_SUCCESS` → `SUCCESS`
+Failure states: `CREATE_TASK_FAILED`, `GENERATE_AUDIO_FAILED`, `SENSITIVE_WORD_ERROR`
+
+Show elapsed time each cycle. If status is a failure state, show `data.errorMessage` and stop.
+
+## Step 5 — Return result
+
+When `status` is `SUCCESS`, extract the audio URL from `data.response.sunoData[0].audioUrl`. If multiple tracks were generated (sunoData may have 2 items), show all URLs.
+
+Display:
+- All audio URLs as clickable links, numbered if multiple
+- Track title(s) and tags
+- Task ID for reference
+
+Ask if the user wants to download locally. If yes, download each:
+
+```bash
+curl -L -o ~/Downloads/"music-$(date +%Y%m%d-%H%M%S).mp3" "<audio_url>"
+```
+
+Report saved paths.

@@ -1,0 +1,77 @@
+---
+name: kie-voiceover
+description: Generate a voiceover from a script using ElevenLabs via the kie.ai API. Use when the user asks to generate a voiceover, narration, or text-to-speech. Also use when the user invokes /kie-voiceover directly.
+---
+
+Generate a voiceover via the kie.ai ElevenLabs text-to-speech API.
+
+## Step 1 — Parse arguments
+
+The user's args string is the script text. Accept these optional flags:
+- `--voice <id>` — ElevenLabs voice ID (default: `Lp2NZJAfG4zDynNcYPSz`)
+- `--model <id>` — TTS model (default: `elevenlabs/text-to-speech-turbo-2-5`). Options: `elevenlabs/text-to-speech-turbo-2-5`, `elevenlabs/text-to-speech-multilingual-v2`
+- `--speed <n>` — playback rate 0.7–1.2 (default: `1`)
+- `--stability <n>` — voice consistency 0–1 (default: `0.5`)
+- `--lang <code>` — ISO 639-1 language code (default: omit for auto-detect)
+- `--prev-text <text>` — text from the previous generation for voice continuity
+- `--next-text <text>` — text that follows this generation for voice continuity
+
+**Voice continuity note:** kie.ai's ElevenLabs TTS uses `previous_text` and `next_text` (surrounding script context) to maintain consistent delivery across multiple generations. Pass the preceding segment as `--prev-text` and the following segment as `--next-text` when generating multi-part voiceovers.
+
+## Step 2 — Check API key
+
+Verify `KIE_API_KEY` is set. If not, tell the user to run: `export KIE_API_KEY=your_key_here`
+
+## Step 3 — Submit the task
+
+```bash
+curl -s -X POST https://api.kie.ai/api/v1/jobs/createTask \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $KIE_API_KEY" \
+  -d '{
+    "model": "<model>",
+    "input": {
+      "text": "<script>",
+      "voice": "<voice_id>",
+      "stability": <stability>,
+      "similarity_boost": 0.75,
+      "speed": <speed>,
+      "previous_text": "<prev_text>",
+      "next_text": "<next_text>"
+    }
+  }'
+```
+
+Omit `language_code` unless `--lang` was specified. Omit `previous_text` and `next_text` unless the corresponding flags were provided.
+
+Parse the response. If `code` is not `200`, show `msg` and stop. Extract `data.taskId`.
+
+## Step 4 — Poll for completion
+
+Poll every 8 seconds:
+
+```bash
+curl -s "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=<taskId>" \
+  -H "Authorization: Bearer $KIE_API_KEY"
+```
+
+`data.state` values: `waiting` → `queuing` → `generating` → `success` / `fail`
+
+Show status updates. If `state` is `fail`, show `data.failMsg` and stop.
+
+## Step 5 — Return result
+
+When `state` is `success`, parse `data.resultJson` as JSON and extract the audio URL from `resultUrls[0]`.
+
+Display:
+- The audio URL as a clickable link
+- Voice ID and model used
+- Task ID for reference
+
+Ask if the user wants to download locally. If yes:
+
+```bash
+curl -L -o ~/Downloads/"voiceover-$(date +%Y%m%d-%H%M%S).mp3" "<audio_url>"
+```
+
+Report the saved path.
