@@ -115,90 +115,13 @@
     },
     {
       "parameters": {
-        "mode": "manual",
-        "duplicateItem": false,
-        "assignments": {
-          "assignments": [
-            {
-              "id": "pv-topic",
-              "name": "TOPIC",
-              "value": "={{ $json.TOPIC }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-angle",
-              "name": "ANGLE",
-              "value": "={{ $json.ANGLE }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-evidence",
-              "name": "KEY_EVIDENCE",
-              "value": "={{ $json.KEY_EVIDENCE }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-researchers",
-              "name": "KEY_RESEARCHERS",
-              "value": "={{ $json.KEY_RESEARCHERS }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-related",
-              "name": "RELATED_VIDEO",
-              "value": "={{ $json.RELATED_VIDEO || 'N/A' }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-hook",
-              "name": "HOOK_STYLE",
-              "value": "={{ $json.HOOK_STYLE }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-tone",
-              "name": "TONE_DIAL",
-              "value": "={{ $json.TONE_DIAL || 7 }}",
-              "type": "number"
-            },
-            {
-              "id": "pv-voice",
-              "name": "VOICE_ID",
-              "value": "={{ $json.VOICE_ID }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-slug",
-              "name": "projectSlug",
-              "value": "={{ $json.TOPIC.toLowerCase().replace(/[^a-z0-9]+/g, '_').substring(0, 40) + '_' + new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12) }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-dir",
-              "name": "projectDir",
-              "value": "={{ '/Users/jneal/n8n_projects/' + $json.TOPIC.toLowerCase().replace(/[^a-z0-9]+/g, '_').substring(0, 40) + '_' + new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12) }}",
-              "type": "string"
-            },
-            {
-              "id": "pv-revision",
-              "name": "revisionNotes",
-              "value": "",
-              "type": "string"
-            },
-            {
-              "id": "pv-vorev",
-              "name": "voiceoverRevisionNotes",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.item.json;\n\n// Compute timestamp once — used in both slug and dir\nconst ts   = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12);\nconst slug = (input.TOPIC || '')\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '_')\n  .substring(0, 40)\n  + '_' + ts;\n\nreturn [{\n  json: {\n    TOPIC:                  input.TOPIC           || '',\n    ANGLE:                  input.ANGLE           || '',\n    KEY_EVIDENCE:           input.KEY_EVIDENCE    || '',\n    KEY_RESEARCHERS:        input.KEY_RESEARCHERS || '',\n    RELATED_VIDEO:          input.RELATED_VIDEO   || 'N/A',\n    HOOK_STYLE:             input.HOOK_STYLE      || 'contradiction',\n    TONE_DIAL:              parseInt(input.TONE_DIAL, 10) || 7,\n    VOICE_ID:               input.VOICE_ID        || '',\n    projectSlug:            slug,\n    projectDir:             '/Users/jneal/n8n_projects/' + slug,\n    revisionNotes:          '',\n    voiceoverRevisionNotes: ''\n  }\n}];\n"
       },
       "id": "node-02-set-vars",
       "name": "Set Project Variables",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         240,
         304
