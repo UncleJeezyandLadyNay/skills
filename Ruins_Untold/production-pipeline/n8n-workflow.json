@@ -91,12 +91,6 @@
               "fieldType": "number",
               "placeholder": "1",
               "requiredField": true
-            },
-            {
-              "fieldLabel": "VOICE PROFILE ID",
-              "fieldType": "text",
-              "placeholder": "ElevenLabs voice ID — leave blank to use channel default",
-              "requiredField": false
             }
           ]
         },
@@ -116,7 +110,7 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const selection = parseInt($json[\"CASE NUMBER\"], 10);\nconst voiceId   = ($json[\"VOICE PROFILE ID\"] || '').trim();\n\n// Retrieve all rows cached before the Wait node\nconst allRows = JSON.parse($('Aggregate Topics').item.json.allRows);\n\nif (!selection || selection < 1 || selection > allRows.length) {\n  throw new Error(\n    `Invalid selection \"${selection}\". Enter 1–${allRows.length}.`\n  );\n}\n\nconst row = allRows[selection - 1];\n\nreturn [{\n  json: {\n    TOPIC:            row.TOPIC            || '',\n    ANGLE:            row.ANGLE            || '',\n    KEY_EVIDENCE:     row.KEY_EVIDENCE     || '',\n    KEY_RESEARCHERS:  row.KEY_RESEARCHERS  || '',\n    RELATED_VIDEO:    row.RELATED_VIDEO    || 'N/A',\n    HOOK_STYLE:       row.HOOK_STYLE       || 'contradiction',\n    TONE_DIAL:        parseInt(row.TONE_DIAL, 10) || 7,\n    VOICE_ID:         voiceId || row.VOICE_ID || ''\n  }\n}];\n"
+        "jsCode": "const selection = parseInt($json[\"CASE NUMBER\"], 10);\nconst voiceId   = 'Lp2NZJAfG4zDynNcYPSz';\n\n// Retrieve all rows cached before the Wait node\nconst allRows = JSON.parse($('Aggregate Topics').item.json.allRows);\n\nif (!selection || selection < 1 || selection > allRows.length) {\n  throw new Error(\n    `Invalid selection \"${selection}\". Enter 1–${allRows.length}.`\n  );\n}\n\nconst row = allRows[selection - 1];\n\nreturn [{\n  json: {\n    TOPIC:            row.TOPIC            || '',\n    ANGLE:            row.ANGLE            || '',\n    KEY_EVIDENCE:     row.KEY_EVIDENCE     || '',\n    KEY_RESEARCHERS:  row.KEY_RESEARCHERS  || '',\n    RELATED_VIDEO:    row.RELATED_VIDEO    || 'N/A',\n    HOOK_STYLE:       row.HOOK_STYLE       || 'contradiction',\n    TONE_DIAL:        parseInt(row.TONE_DIAL, 10) || 7,\n    VOICE_ID:         voiceId\n  }\n}];\n"
       }
     },
     {
