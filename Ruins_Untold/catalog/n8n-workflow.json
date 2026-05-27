@@ -45,11 +45,22 @@
     {
       "id": "a1f3e2b0-0003-4c9a-8d7e-333333333333",
       "name": "Generate Ideas via Claude",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
       "position": [600, 340],
       "parameters": {
-        "command": "/bin/bash -l -c 'claude -p \"You are the lead researcher and content strategist for Ruins Untold, a long-form YouTube channel covering ancient mysteries, forbidden archaeology, and alternative history. Generate exactly 10 video ideas as a pure JSON array with no markdown fences, no preamble, and no explanation. Each idea must use this exact schema: {topic: short punchy title 5-10 words, angle: 3-5 sentences opening with mainstream consensus then cracking it with a physical anomaly naming the gatekeeper and ending on the unanswered question, key_evidence: minimum 4 specific items with paper titles dates artifacts locations documents years, key_researchers: named individuals with roles always including at least one antagonist labeled as such, related_video: prior Ruins Untold episode or none yet, hook_style: one of question statement contradiction anomaly revelation, tone_dial: integer 6-7 default never exceed 8}. Rules: every idea needs a concrete physical anomaly, a named gatekeeper institution, and specific dated sources. Topics must span different eras regions and artifact types. Output ONLY the raw JSON array starting with [ and ending with ]. No other text.\"'"
+        "method": "POST",
+        "url": "http://host.docker.internal:3333/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "{\"prompt\": \"You are the lead researcher and content strategist for Ruins Untold, a long-form YouTube channel covering ancient mysteries, forbidden archaeology, and alternative history. Generate exactly 10 video ideas as a pure JSON array with no markdown fences, no preamble, and no explanation. Each idea must use this exact schema: {topic: short punchy title 5-10 words, angle: 3-5 sentences opening with mainstream consensus then cracking it with a physical anomaly naming the gatekeeper and ending on the unanswered question, key_evidence: minimum 4 specific items with paper titles dates artifacts locations documents years, key_researchers: named individuals with roles always including at least one antagonist labeled as such, related_video: prior Ruins Untold episode or none yet, hook_style: one of question statement contradiction anomaly revelation, tone_dial: integer 6-7 default never exceed 8}. Rules: every idea needs a concrete physical anomaly, a named gatekeeper institution, and specific dated sources. Topics must span different eras regions and artifact types. Output ONLY the raw JSON array starting with [ and ending with ]. No other text.\"}"
       }
     },
     {
@@ -60,7 +71,7 @@
       "position": [820, 340],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Extract text from local Claude CLI output\nconst responseText = items[0].json.stdout.trim();\n\n// Parse the JSON array — handle edge case where model wraps in backticks\nlet ideas;\ntry {\n  // Try direct parse first\n  ideas = JSON.parse(responseText);\n} catch (e) {\n  // Strip markdown code fences if present\n  const stripped = responseText.replace(/^```json?\\n?|```$/gm, '').trim();\n  try {\n    ideas = JSON.parse(stripped);\n  } catch (e2) {\n    // Last resort: extract JSON array with regex\n    const match = stripped.match(/(\\[\\s*\\{[\\s\\S]*\\}\\s*\\])/);\n    if (!match) throw new Error('Could not parse ideas from Claude response. Raw: ' + responseText.slice(0, 300));\n    ideas = JSON.parse(match[1]);\n  }\n}\n\nif (!Array.isArray(ideas)) throw new Error('Expected JSON array, got: ' + typeof ideas);\n\n// Return each idea as a separate item, normalizing field names\nreturn ideas.map(idea => ({\n  json: {\n    topic:            (idea.topic            || '').trim(),\n    angle:            (idea.angle            || '').trim(),\n    key_evidence:     (idea.key_evidence     || '').trim(),\n    key_researchers:  (idea.key_researchers  || '').trim(),\n    hook_style:       (idea.hook_style       || '').trim(),\n    tone_dial:        String(idea.tone_dial  || 7),\n    related_video:    (idea.related_video    || 'none yet').trim()\n  }\n}));"
+        "jsCode": "// Extract text from claude-bridge.py response\nconst responseText = items[0].json.output.trim();\n\n// Parse the JSON array — handle edge case where model wraps in backticks\nlet ideas;\ntry {\n  // Try direct parse first\n  ideas = JSON.parse(responseText);\n} catch (e) {\n  // Strip markdown code fences if present\n  const stripped = responseText.replace(/^```json?\\n?|```$/gm, '').trim();\n  try {\n    ideas = JSON.parse(stripped);\n  } catch (e2) {\n    // Last resort: extract JSON array with regex\n    const match = stripped.match(/(\\[\\s*\\{[\\s\\S]*\\}\\s*\\])/);\n    if (!match) throw new Error('Could not parse ideas from Claude response. Raw: ' + responseText.slice(0, 300));\n    ideas = JSON.parse(match[1]);\n  }\n}\n\nif (!Array.isArray(ideas)) throw new Error('Expected JSON array, got: ' + typeof ideas);\n\n// Return each idea as a separate item, normalizing field names\nreturn ideas.map(idea => ({\n  json: {\n    topic:            (idea.topic            || '').trim(),\n    angle:            (idea.angle            || '').trim(),\n    key_evidence:     (idea.key_evidence     || '').trim(),\n    key_researchers:  (idea.key_researchers  || '').trim(),\n    hook_style:       (idea.hook_style       || '').trim(),\n    tone_dial:        String(idea.tone_dial  || 7),\n    related_video:    (idea.related_video    || 'none yet').trim()\n  }\n}));"
       }
     },
     {
