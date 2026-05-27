@@ -176,7 +176,7 @@
             {
               "id": "pv-dir",
               "name": "projectDir",
-              "value": "={{ '/Users/jneal/Antigravity/out/' + $json.TOPIC.toLowerCase().replace(/[^a-z0-9]+/g, '_').substring(0, 40) + '_' + new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12) }}",
+              "value": "={{ '/Users/jneal/n8n_projects/' + $json.TOPIC.toLowerCase().replace(/[^a-z0-9]+/g, '_').substring(0, 40) + '_' + new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12) }}",
               "type": "string"
             },
             {
