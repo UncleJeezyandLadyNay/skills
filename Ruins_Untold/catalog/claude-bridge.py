@@ -42,7 +42,7 @@ class ClaudeHandler(BaseHTTPRequestHandler):
                 ["claude", "-p", prompt],
                 capture_output=True,
                 text=True,
-                timeout=300,  # 5-minute ceiling — 10 detailed ideas can take a while
+                timeout=600,  # 10-minute ceiling
             )
 
             if result.returncode != 0:
