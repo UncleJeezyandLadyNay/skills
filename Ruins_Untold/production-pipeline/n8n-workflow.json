@@ -1713,7 +1713,7 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $('Extract Video Task ID').item.json.kieTaskId }}",
+        "url": "=https://api.kie.ai/api/v1/veo/record-info?taskId={{ $('Extract Video Task ID').item.json.kieTaskId }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {
@@ -1734,33 +1734,31 @@
         "conditions": {
           "options": {
             "caseSensitive": false,
-            "leftValue": "",
             "typeValidation": "loose",
             "version": 1
           },
           "conditions": [
             {
-              "id": "cond-video-s",
-              "leftValue": "={{ $json.data.state }}",
-              "rightValue": "success",
+              "id": "cond-veo-success",
+              "leftValue": "={{ $json.data.successFlag }}",
+              "rightValue": 1,
               "operator": {
-                "type": "string",
+                "type": "number",
                 "operation": "equals"
               }
             },
             {
-              "id": "cond-video-f",
-              "leftValue": "={{ $json.data.state }}",
-              "rightValue": "fail",
+              "id": "cond-veo-error",
+              "leftValue": "={{ $json.data.errorCode }}",
+              "rightValue": "",
               "operator": {
                 "type": "string",
-                "operation": "equals"
+                "operation": "isNotEmpty"
               }
             }
           ],
           "combinator": "or"
-        },
-        "options": {}
+        }
       }
     },
     {
@@ -1774,7 +1772,7 @@
       ],
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "\nconst poll    = $input.item.json;\nconst meta    = $('Prepare Video Request').item.json;\nconst staticData = $getWorkflowStaticData('global');\n\nlet resultJson = {};\ntry { resultJson = JSON.parse(poll.data.resultJson || '{}'); } catch(e) {}\n\nconst assetUrl = (resultJson.resultUrls || [])[0] || '';\nif (!assetUrl) throw new Error(`No URL for ${meta.filename} \u2014 state: ${poll.data.state}`);\n\nstaticData.videoCost = (staticData.videoCost || 0) + (poll.data.creditsConsumed || 0);\nstaticData.videoCount  = (staticData.videoCount  || 0) + 1;\n\nreturn [{ json: {\n  ...meta,\n  assetUrl,\n  filepath:        meta.assetDir + '/' + meta.filename + '.mp4',\n  creditsConsumed: poll.data.creditsConsumed || 0\n} }];\n"
+        "jsCode": "\nconst poll = $input.item.json;\nconst meta = $('Prepare Video Request').item.json;\nconst staticData = $getWorkflowStaticData('global');\n\nconst data = poll.data || {};\n\n// Check for error\nif (data.errorCode) {\n  throw new Error(`${meta.filename} failed: ${data.errorCode} \u2014 ${data.errorMessage}`);\n}\n\n// Veo returns URL in data.response (string or object)\nlet responseObj = data.response || {};\nif (typeof responseObj === 'string') {\n  try { responseObj = JSON.parse(responseObj); } catch(e) {}\n}\n\nconst assetUrl =\n  (responseObj.resultUrls || [])[0] ||\n  responseObj.videoUrl ||\n  responseObj.url ||\n  responseObj.video_url ||\n  '';\n\nif (!assetUrl) throw new Error(`No URL for ${meta.filename} \u2014 response: ${JSON.stringify(responseObj).slice(0,200)}`);\n\nstaticData.videoCost  = (staticData.videoCost  || 0) + (data.creditsConsumed || 0);\nstaticData.videoCount = (staticData.videoCount || 0) + 1;\n\nreturn [{ json: {\n  ...meta,\n  assetUrl,\n  filepath:        meta.assetDir + '/' + meta.filename + '.mp4',\n  creditsConsumed: data.creditsConsumed || 0\n} }];\n"
       }
     },
     {
