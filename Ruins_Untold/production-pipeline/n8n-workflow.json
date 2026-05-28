@@ -2180,7 +2180,7 @@
         304
       ],
       "parameters": {
-        "command": "bash /Users/jneal/n8n_projects/get_review_url.sh"
+        "command": "={{ 'printf \"Script review is ready. The form will be live shortly.\\n\\nRun this command in Terminal to get your form URL:\\n  bash ~/n8n_projects/get_review_url.sh\\n\\nExecution ID: ' + $execution.id + '\\n\" > /Users/jneal/n8n_projects/SCRIPT_REVIEW_FORM.txt && echo \"Ready: exec ' + $execution.id + '\"' }}"
       }
     }
   ],
