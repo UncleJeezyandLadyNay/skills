@@ -252,11 +252,11 @@
           "conditions": [
             {
               "id": "cond-script",
-              "leftValue": "={{ $json.Decision }}",
-              "rightValue": "approve",
+              "leftValue": "={{ $json.AUTHORIZATION }}",
+              "rightValue": "AUTHORIZE",
               "operator": {
                 "type": "string",
-                "operation": "equals"
+                "operation": "contains"
               }
             }
           ],
@@ -386,11 +386,11 @@
           "conditions": [
             {
               "id": "cond-vo",
-              "leftValue": "={{ $json.Decision }}",
-              "rightValue": "approve",
+              "leftValue": "={{ $json['CLEARANCE DECISION'] }}",
+              "rightValue": "CLEARED",
               "operator": {
                 "type": "string",
-                "operation": "equals"
+                "operation": "contains"
               }
             }
           ],
@@ -547,8 +547,8 @@
           "conditions": [
             {
               "id": "cond-prompts",
-              "leftValue": "={{ $json.Decision }}",
-              "rightValue": "AUTHORIZE — PROCEED TO ASSEMBLY",
+              "leftValue": "={{ $json.AUTHORIZATION }}",
+              "rightValue": "AUTHORIZE",
               "operator": {
                 "type": "string",
                 "operation": "contains"
@@ -650,8 +650,8 @@
           "conditions": [
             {
               "id": "cond-assets",
-              "leftValue": "={{ $json.Decision }}",
-              "rightValue": "approve",
+              "leftValue": "={{ $json['FINAL AUTHORIZATION'] }}",
+              "rightValue": "EXECUTE",
               "operator": {
                 "type": "string",
                 "operation": "contains"
