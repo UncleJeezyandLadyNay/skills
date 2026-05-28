@@ -1311,47 +1311,6 @@
       "parameters": {
         "command": "={{ $json.writeCmd }}"
       }
-    },
-    {
-      "id": "build-mock-cmd",
-      "name": "Build Mock Command",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2640,
-        100
-      ],
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "const chunkData = $('Parse & Chunk Voiceover').item.json;\nconst audioDir  = chunkData.audioDir;\nconst count     = chunkData.chunkCount;\n\nconst parts = [`mkdir -p \"${audioDir}\"`];\nfor (let i = 1; i <= count; i++) {\n  const num = String(i).padStart(2, '0');\n  parts.push(\n    `ffmpeg -y -f lavfi -i anullsrc=r=44100:cl=mono -t 1 -acodec libmp3lame \"${audioDir}/chunk_${num}.mp3\" 2>/dev/null` +\n    ` || touch \"${audioDir}/chunk_${num}.mp3\"`\n  );\n}\nparts.push(`echo \"\u2713 TEST MODE: ${count} mock MP3 files created in ${audioDir}\"`);\n\nreturn [{\n  json: {\n    ...chunkData,\n    mockCmd: parts.join(' && ')\n  }\n}];\n"
-      }
-    },
-    {
-      "id": "create-mock-audio",
-      "name": "Create Mock Audio Files",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        2880,
-        100
-      ],
-      "parameters": {
-        "command": "={{ $json.mockCmd }}"
-      }
-    },
-    {
-      "id": "prep-concat-test",
-      "name": "Prep Concat Input (Test)",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        3120,
-        100
-      ],
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "const chunkData = $('Parse & Chunk Voiceover').item.json;\nreturn [{\n  json: {\n    audioDir:    chunkData.audioDir,\n    projectSlug: chunkData.projectSlug,\n    chunkCount:  chunkData.chunkCount,\n    testMode:    true\n  }\n}];\n"
-      }
     }
   ],
   "connections": {
@@ -1853,7 +1812,7 @@
       "main": [
         [
           {
-            "node": "Build Mock Command",
+            "node": "Expand Chunk Items",
             "type": "main",
             "index": 0
           }
@@ -2055,39 +2014,6 @@
         [
           {
             "node": "Parse & Chunk Voiceover",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Build Mock Command": {
-      "main": [
-        [
-          {
-            "node": "Create Mock Audio Files",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Mock Audio Files": {
-      "main": [
-        [
-          {
-            "node": "Prep Concat Input (Test)",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Prep Concat Input (Test)": {
-      "main": [
-        [
-          {
-            "node": "Concatenate Voiceover Audio",
             "type": "main",
             "index": 0
           }
