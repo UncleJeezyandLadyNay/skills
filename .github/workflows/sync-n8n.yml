@@ -18,16 +18,12 @@ jobs:
           N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
           N8N_WORKFLOW_ID: ${{ secrets.N8N_WORKFLOW_ID }}
         run: |
-          python3 -c "
-import json, os
-with open('Ruins_Untold/catalog/n8n-workflow.json') as f:
-    w = json.load(f)
-w['id'] = os.environ['N8N_WORKFLOW_ID']
-print(json.dumps(w))
-" | curl -sf -X PUT \
-            "http://localhost:5678/api/v1/workflows/${N8N_WORKFLOW_ID}" \
-            -H "X-N8N-API-KEY: ${N8N_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d @- \
+          cat Ruins_Untold/catalog/n8n-workflow.json | \
+            python3 -c "import json,sys,os; w=json.load(sys.stdin); w['id']=os.environ['N8N_WORKFLOW_ID']; print(json.dumps(w))" | \
+            curl -sf -X PUT \
+              "http://localhost:5678/api/v1/workflows/${N8N_WORKFLOW_ID}" \
+              -H "X-N8N-API-KEY: ${N8N_API_KEY}" \
+              -H "Content-Type: application/json" \
+              -d @- \
           && echo "Workflow synced to n8n" \
           || (echo "Sync failed" && exit 1)
