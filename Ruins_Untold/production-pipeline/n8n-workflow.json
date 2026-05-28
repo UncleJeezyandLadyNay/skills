@@ -50,7 +50,7 @@
       },
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "id": "5KlwkkXYEjhrIznj",
           "name": "Google Sheets account"
         }
       }
@@ -110,13 +110,13 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const selection = parseInt($json[\"CASE NUMBER\"], 10);\nconst voiceId   = 'Lp2NZJAfG4zDynNcYPSz';\n\n// Retrieve all rows cached before the Wait node\nconst allRows = JSON.parse($('Aggregate Topics').item.json.allRows);\n\nif (!selection || selection < 1 || selection > allRows.length) {\n  throw new Error(\n    `Invalid selection \"${selection}\". Enter 1\u2013${allRows.length}.`\n  );\n}\n\nconst row = allRows[selection - 1];\n\nreturn [{\n  json: {\n    TOPIC:            row.TOPIC            || '',\n    ANGLE:            row.ANGLE            || '',\n    KEY_EVIDENCE:     row.KEY_EVIDENCE     || '',\n    KEY_RESEARCHERS:  row.KEY_RESEARCHERS  || '',\n    RELATED_VIDEO:    row.RELATED_VIDEO    || 'N/A',\n    HOOK_STYLE:       row.HOOK_STYLE       || 'contradiction',\n    TONE_DIAL:        parseInt(row.TONE_DIAL, 10) || 7,\n    VOICE_ID:         voiceId\n  }\n}];\n"
+        "jsCode": "\nconst selection = parseInt($json[\"CASE NUMBER\"], 10);\nconst voiceId   = 'Lp2NZJAfG4zDynNcYPSz';\n\nconst allRows = JSON.parse($('Aggregate Topics').item.json.allRows);\n\nif (!selection || selection < 1 || selection > allRows.length) {\n  throw new Error(\n    `Invalid selection \"${selection}\". Enter 1\u2013${allRows.length}.`\n  );\n}\n\nconst row = allRows[selection - 1];\n\nreturn [{\n  json: {\n    TOPIC:            row.TOPIC            || '',\n    ANGLE:            row.ANGLE            || '',\n    KEY_EVIDENCE:     row.KEY_EVIDENCE     || '',\n    KEY_RESEARCHERS:  row.KEY_RESEARCHERS  || '',\n    RELATED_VIDEO:    row.RELATED_VIDEO    || 'N/A',\n    HOOK_STYLE:       row.HOOK_STYLE       || 'contradiction',\n    TONE_DIAL:        row.TONE_DIAL        || 7,\n    STATUS:           row.STATUS           || '',\n    VOICE_ID:         row.VOICE_ID         || voiceId,\n    row_number:       row.row_number       || 0   // \u2190 preserve for end-of-pipeline delete\n  }\n}];\n"
       }
     },
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const input = $input.item.json;\n\n// Compute timestamp once \u2014 used in both slug and dir\nconst ts   = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12);\nconst slug = (input.TOPIC || '')\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '_')\n  .substring(0, 40)\n  + '_' + ts;\n\nreturn [{\n  json: {\n    TOPIC:                  input.TOPIC           || '',\n    ANGLE:                  input.ANGLE           || '',\n    KEY_EVIDENCE:           input.KEY_EVIDENCE    || '',\n    KEY_RESEARCHERS:        input.KEY_RESEARCHERS || '',\n    RELATED_VIDEO:          input.RELATED_VIDEO   || 'N/A',\n    HOOK_STYLE:             input.HOOK_STYLE      || 'contradiction',\n    TONE_DIAL:              parseInt(input.TONE_DIAL, 10) || 7,\n    VOICE_ID:               input.VOICE_ID        || '',\n    projectSlug:            slug,\n    projectDir:             '/Users/jneal/n8n_projects/' + slug,\n    revisionNotes:          '',\n    voiceoverRevisionNotes: ''\n  }\n}];\n"
+        "jsCode": "\nconst input = $input.item.json;\n\nconst ts   = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12);\nconst slug = (input.TOPIC || '')\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '_')\n  .substring(0, 40)\n  + '_' + ts;\n\nreturn [{\n  json: {\n    TOPIC:                  input.TOPIC           || '',\n    ANGLE:                  input.ANGLE           || '',\n    KEY_EVIDENCE:           input.KEY_EVIDENCE    || '',\n    KEY_RESEARCHERS:        input.KEY_RESEARCHERS || '',\n    RELATED_VIDEO:          input.RELATED_VIDEO   || 'N/A',\n    HOOK_STYLE:             input.HOOK_STYLE      || 'contradiction',\n    TONE_DIAL:              parseInt(input.TONE_DIAL, 10) || 7,\n    VOICE_ID:               input.VOICE_ID        || '',\n    rowNumber:              input.row_number      || 0,   // \u2190 Sheets row (1-based)\n    projectSlug:            slug,\n    projectDir:             '/Users/jneal/n8n_projects/' + slug,\n    revisionNotes:          '',\n    voiceoverRevisionNotes: ''\n  }\n}];\n"
       },
       "id": "node-02-set-vars",
       "name": "Set Project Variables",
@@ -920,7 +920,7 @@
       },
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "id": "5KlwkkXYEjhrIznj",
           "name": "Google Sheets account"
         }
       }
@@ -961,7 +961,7 @@
       },
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "id": "5KlwkkXYEjhrIznj",
           "name": "Google Sheets account"
         }
       }
@@ -2090,6 +2090,84 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "jsCode": "\nconst staticData = $getWorkflowStaticData('global');\nconst vars = $('Set Project Variables').item.json;\n\nconst imageCost = Math.round((staticData.imageCost || 0) * 100) / 100;\nconst videoCost = Math.round((staticData.videoCost || 0) * 100) / 100;\nconst musicCost = Math.round((staticData.musicCost || 0) * 100) / 100;\nconst sfxCost   = Math.round((staticData.sfxCost   || 0) * 100) / 100;\nconst totalCost = Math.round((imageCost+videoCost+musicCost+sfxCost)*100)/100;\n\nconst BAR = '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501';\nconst costSummary = [\n  BAR,\n  'GENERATION COMPLETE \u2014 COST SUMMARY',\n  BAR,\n  `  IMAGES  (NanoBanana 2) : ${staticData.imageCount||0} files \u2014 ${imageCost} credits`,\n  `  VIDEOS  (Veo 3.1 Lite) : ${staticData.videoCount||0} files \u2014 ${videoCost} credits`,\n  `  MUSIC   (Suno)         : ${staticData.musicCount||0} files \u2014 ${musicCost} credits`,\n  `  SFX     (Suno)         : ${staticData.sfxCount||0}   files \u2014 ${sfxCost} credits`,\n  BAR,\n  `  TOTAL CREDITS          : ${totalCost}`,\n  BAR\n].join('\\n');\n\nreturn [{ json: {\n  ...vars, imageCost, imageCount: staticData.imageCount||0,\n  videoCost, videoCount: staticData.videoCount||0,\n  musicCost, musicCount: staticData.musicCount||0,\n  sfxCost,   sfxCount:   staticData.sfxCount||0,\n  totalCost, costSummary\n} }];\n"
+      }
+    },
+    {
+      "id": "node-append-completed",
+      "name": "Append to Completed",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        8640,
+        512
+      ],
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kF8cfyh3qZZIcPcSWYs8olZZYPxFhxBTUhtjK04Eb68",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Completed",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TOPIC": "={{ $('Set Project Variables').item.json.TOPIC }}",
+            "ANGLE": "={{ $('Set Project Variables').item.json.ANGLE }}",
+            "KEY_EVIDENCE": "={{ $('Set Project Variables').item.json.KEY_EVIDENCE }}",
+            "KEY_RESEARCHERS": "={{ $('Set Project Variables').item.json.KEY_RESEARCHERS }}",
+            "RELATED_VIDEO": "={{ $('Set Project Variables').item.json.RELATED_VIDEO }}",
+            "HOOK_STYLE": "={{ $('Set Project Variables').item.json.HOOK_STYLE }}",
+            "TONE_DIAL": "={{ $('Set Project Variables').item.json.TONE_DIAL }}",
+            "STATUS": "Complete",
+            "VOICE_ID": "={{ $('Set Project Variables').item.json.VOICE_ID }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5KlwkkXYEjhrIznj",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "id": "node-delete-ideas-row",
+      "name": "Delete from Ideas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        8880,
+        512
+      ],
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1kF8cfyh3qZZIcPcSWYs8olZZYPxFhxBTUhtjK04Eb68",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "gid"
+        },
+        "toDelete": "rows",
+        "startIndex": "={{ $('Set Project Variables').item.json.rowNumber - 1 }}",
+        "endIndex": "={{ $('Set Project Variables').item.json.rowNumber }}"
+      },
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5KlwkkXYEjhrIznj",
+          "name": "Google Sheets account"
+        }
       }
     }
   ],
@@ -3294,6 +3372,28 @@
         [
           {
             "node": "Save Sfx File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Complete": {
+      "main": [
+        [
+          {
+            "node": "Append to Completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append to Completed": {
+      "main": [
+        [
+          {
+            "node": "Delete from Ideas",
             "type": "main",
             "index": 0
           }
