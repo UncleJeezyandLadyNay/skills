@@ -2,7 +2,7 @@
   "updatedAt": "2026-05-20T20:00:16.934Z",
   "createdAt": "2026-05-18T19:06:43.033Z",
   "id": "ruins-untold-pipeline-v1",
-  "name": "Ruins Untold — YouTube Production Pipeline",
+  "name": "Ruins Untold \u2014 YouTube Production Pipeline",
   "description": null,
   "active": true,
   "isArchived": false,
@@ -81,8 +81,8 @@
       "webhookId": "ruins-untold-topic-select",
       "parameters": {
         "resume": "form",
-        "formTitle": "RUINS UNTOLD — CASE FILE SELECTION",
-        "formDescription": "={{ 'CLASSIFIED — INTERNAL PRODUCTION USE ONLY\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'OPEN CASE FILES — STATUS: NEW\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n\\n'+ $json.topicList+ '\\n\\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'Enter the case number to open for production.' }}",
+        "formTitle": "RUINS UNTOLD \u2014 CASE FILE SELECTION",
+        "formDescription": "={{ 'CLASSIFIED \u2014 INTERNAL PRODUCTION USE ONLY\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'OPEN CASE FILES \u2014 STATUS: NEW\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n\\n'+ $json.topicList+ '\\n\\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'Enter the case number to open for production.' }}",
         "responseMode": "lastNode",
         "formFields": {
           "values": [
@@ -110,13 +110,13 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const selection = parseInt($json[\"CASE NUMBER\"], 10);\nconst voiceId   = 'Lp2NZJAfG4zDynNcYPSz';\n\n// Retrieve all rows cached before the Wait node\nconst allRows = JSON.parse($('Aggregate Topics').item.json.allRows);\n\nif (!selection || selection < 1 || selection > allRows.length) {\n  throw new Error(\n    `Invalid selection \"${selection}\". Enter 1–${allRows.length}.`\n  );\n}\n\nconst row = allRows[selection - 1];\n\nreturn [{\n  json: {\n    TOPIC:            row.TOPIC            || '',\n    ANGLE:            row.ANGLE            || '',\n    KEY_EVIDENCE:     row.KEY_EVIDENCE     || '',\n    KEY_RESEARCHERS:  row.KEY_RESEARCHERS  || '',\n    RELATED_VIDEO:    row.RELATED_VIDEO    || 'N/A',\n    HOOK_STYLE:       row.HOOK_STYLE       || 'contradiction',\n    TONE_DIAL:        parseInt(row.TONE_DIAL, 10) || 7,\n    VOICE_ID:         voiceId\n  }\n}];\n"
+        "jsCode": "const selection = parseInt($json[\"CASE NUMBER\"], 10);\nconst voiceId   = 'Lp2NZJAfG4zDynNcYPSz';\n\n// Retrieve all rows cached before the Wait node\nconst allRows = JSON.parse($('Aggregate Topics').item.json.allRows);\n\nif (!selection || selection < 1 || selection > allRows.length) {\n  throw new Error(\n    `Invalid selection \"${selection}\". Enter 1\u2013${allRows.length}.`\n  );\n}\n\nconst row = allRows[selection - 1];\n\nreturn [{\n  json: {\n    TOPIC:            row.TOPIC            || '',\n    ANGLE:            row.ANGLE            || '',\n    KEY_EVIDENCE:     row.KEY_EVIDENCE     || '',\n    KEY_RESEARCHERS:  row.KEY_RESEARCHERS  || '',\n    RELATED_VIDEO:    row.RELATED_VIDEO    || 'N/A',\n    HOOK_STYLE:       row.HOOK_STYLE       || 'contradiction',\n    TONE_DIAL:        parseInt(row.TONE_DIAL, 10) || 7,\n    VOICE_ID:         voiceId\n  }\n}];\n"
       }
     },
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const input = $input.item.json;\n\n// Compute timestamp once — used in both slug and dir\nconst ts   = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12);\nconst slug = (input.TOPIC || '')\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '_')\n  .substring(0, 40)\n  + '_' + ts;\n\nreturn [{\n  json: {\n    TOPIC:                  input.TOPIC           || '',\n    ANGLE:                  input.ANGLE           || '',\n    KEY_EVIDENCE:           input.KEY_EVIDENCE    || '',\n    KEY_RESEARCHERS:        input.KEY_RESEARCHERS || '',\n    RELATED_VIDEO:          input.RELATED_VIDEO   || 'N/A',\n    HOOK_STYLE:             input.HOOK_STYLE      || 'contradiction',\n    TONE_DIAL:              parseInt(input.TONE_DIAL, 10) || 7,\n    VOICE_ID:               input.VOICE_ID        || '',\n    projectSlug:            slug,\n    projectDir:             '/Users/jneal/n8n_projects/' + slug,\n    revisionNotes:          '',\n    voiceoverRevisionNotes: ''\n  }\n}];\n"
+        "jsCode": "const input = $input.item.json;\n\n// Compute timestamp once \u2014 used in both slug and dir\nconst ts   = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 12);\nconst slug = (input.TOPIC || '')\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '_')\n  .substring(0, 40)\n  + '_' + ts;\n\nreturn [{\n  json: {\n    TOPIC:                  input.TOPIC           || '',\n    ANGLE:                  input.ANGLE           || '',\n    KEY_EVIDENCE:           input.KEY_EVIDENCE    || '',\n    KEY_RESEARCHERS:        input.KEY_RESEARCHERS || '',\n    RELATED_VIDEO:          input.RELATED_VIDEO   || 'N/A',\n    HOOK_STYLE:             input.HOOK_STYLE      || 'contradiction',\n    TONE_DIAL:              parseInt(input.TONE_DIAL, 10) || 7,\n    VOICE_ID:               input.VOICE_ID        || '',\n    projectSlug:            slug,\n    projectDir:             '/Users/jneal/n8n_projects/' + slug,\n    revisionNotes:          '',\n    voiceoverRevisionNotes: ''\n  }\n}];\n"
       },
       "id": "node-02-set-vars",
       "name": "Set Project Variables",
@@ -157,13 +157,13 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({\n  prompt:\n    \"You are the lead scriptwriter for Ruins Untold, a long-form YouTube channel exploring ancient mysteries, forbidden archaeology, and alternative history. Your job is to write scripts that sound like they were written by the host — not by an AI.\\n\\nCHANNEL IDENTITY\\nChannel name: Ruins Untold\\nFormat: Long-form YouTube (~20 minutes per video)\\nCore premise: The gap between mainstream historical narrative and the physical, geological, and archaeological evidence that mainstream academia cannot — or will not — adequately explain.\\nChannel promise: \\\"We go where the evidence leads, even when it leads somewhere uncomfortable.\\\"\\n\\nTONE PROFILE\\nPRIMARY VOICE — Conversational authority. You know this material deeply. You have done the research. But you are sharing it with a friend, not presenting a dissertation. Never academic. Never breathless. Measured, deliberate, occasionally wry.\\n\\nCONSPIRATORIAL REGISTER — Slightly conspiratorial, never unhinged. The framing is always: \\\"Here is what the evidence shows. Draw your own conclusions.\\\" Never state unfalsifiable claims as fact. \\\"Suggests\\\" and \\\"points toward\\\" are your hedges. Use them.\\n\\nSELF-AWARE DISCLAIMERS — Maximum two per script. Approved forms: \\\"Look, I know how this sounds...\\\", \\\"I'm not saying this is proof of anything, but...\\\", \\\"I'm no conspiracy theorist, but you have to ask...\\\", \\\"Bear with me here.\\\"\\n\\nTHE COLLECTIVE WE — Use: \\\"We've been told...\\\", \\\"What we're looking at here...\\\", \\\"Come with me as we explore...\\\", \\\"We're not supposed to ask this question.\\\"\\n\\nPACING — Build slowly. Use \\\"...\\\" to mark deliberate pause. Short sentences for emphasis.\\n\\nAUDIENCE: Age 25-65, global English-speaking. Skeptical of institutional authority. Not fringe. Global clarity — no idioms, American sports metaphors, or British slang.\\n\\nSCRIPT STRUCTURE — 20-MINUTE LONG FORM\\n\\nHOOK (0:00–0:45): Open inside the mystery. Do not introduce channel or host first. Hook formats: QUESTION (three escalating questions, third has no mainstream answer), PARADOX (two facts that cannot both be true), EVIDENCE (open on the anomaly), CONTRADICTION (state mainstream claim, then the physical evidence against it). Always end: \\\"Welcome to Ruins Untold. Come with me as we explore this together.\\\"\\n\\nCONTEXT BRIDGE (0:45–2:30): Establish mainstream position fairly. Tone: measured, slightly dry.\\n\\nACT 1 — THE OFFICIAL STORY (2:30–6:00): Honest detail of consensus model. Pattern interrupt at ~5:00.\\n\\nACT 2 — THE ANOMALIES (6:00–12:00): Each anomaly: (1) State clearly, (2) Why mainstream explanation insufficient, (3) \\\"We will come back to what this means.\\\" Pattern interrupt at ~8:30 (change angle). Pattern interrupt at ~11:00 (emotional peak: \\\"Here's where it gets uncomfortable.\\\").\\n\\nACT 3 — THE ALTERNATIVE INTERPRETATION (12:00–17:30): Alternative model with specificity. Cite real researchers. Approved: Graham Hancock, Randall Carlson, Robert Schoch, John Anthony West, Brien Foerster, James Kennett, Allen West, Christopher Moore, Andrew Collins, Michael Cremo. Pattern interrupt at ~14:30 (self-aware disclaimer).\\n\\nRESOLUTION + CTA (17:30–20:00): (1) Summary without mainstream framing, (2) \\\"The question isn't whether this existed. The question is why we are not allowed to ask.\\\", (3) Subscribe CTA + comment + related video, (4) Episode tease.\\n\\nLANGUAGE RULES\\nALWAYS: Present tense for evidence. Short sentences. \\\"...\\\" for pause. Hedged language. \\\"We\\\" for collective discovery.\\nNEVER: \\\"delve\\\", \\\"captivating\\\", \\\"fascinating\\\", \\\"it's worth noting\\\", \\\"in conclusion\\\", academic passive voice, \\\"In today's video\\\", \\\"Make sure to like and subscribe\\\" before CTA, \\\"As we all know\\\", \\\"Throughout history\\\", condescension toward academics, unverifiable claims as fact.\\n\\nLOCKED VOICE SAMPLE: \\\"Why did every ancient civilization suddenly stop building around 1200 BC? Was it climate change?...Was it caused by humans?...Or was it something else entirely?...Welcome to Ruins Untold...Come with me as we explore these questions together.\\\"\\n\\nOUTPUT FORMAT — produce exactly:\\n1. SCRIPT — Full 20-minute script with timestamps and section headers\\n2. HOOK VARIANTS — 2 alternative hooks (other two formats)\\n3. CHAPTER MARKERS — YouTube timestamps\"\n    + \"\\n\\n---\\n\\n\"\n    + \"TOPIC: \"           + $('Set Project Variables').item.json.TOPIC + \"\\n\"\n    + \"ANGLE: \"           + $('Set Project Variables').item.json.ANGLE + \"\\n\"\n    + \"KEY_EVIDENCE: \"    + $('Set Project Variables').item.json.KEY_EVIDENCE + \"\\n\"\n    + \"KEY_RESEARCHERS: \" + $('Set Project Variables').item.json.KEY_RESEARCHERS + \"\\n\"\n    + \"RELATED_VIDEO: \"   + $('Set Project Variables').item.json.RELATED_VIDEO + \"\\n\"\n    + \"HOOK_STYLE: \"      + $('Set Project Variables').item.json.HOOK_STYLE + \"\\n\"\n    + \"TONE_DIAL: \"       + $('Set Project Variables').item.json.TONE_DIAL\n    + ($('Set Project Variables').item.json.revisionNotes\n        ? \"\\n\\nREVISION NOTES FROM PREVIOUS DRAFT: \"\n          + $('Set Project Variables').item.json.revisionNotes\n        : \"\")\n}) }}",
+        "body": "={{ JSON.stringify({\n  prompt:\n    \"You are the lead scriptwriter for Ruins Untold, a long-form YouTube channel exploring ancient mysteries, forbidden archaeology, and alternative history. Your job is to write scripts that sound like they were written by the host \u2014 not by an AI.\\n\\nCHANNEL IDENTITY\\nChannel name: Ruins Untold\\nFormat: Long-form YouTube (~20 minutes per video)\\nCore premise: The gap between mainstream historical narrative and the physical, geological, and archaeological evidence that mainstream academia cannot \u2014 or will not \u2014 adequately explain.\\nChannel promise: \\\"We go where the evidence leads, even when it leads somewhere uncomfortable.\\\"\\n\\nTONE PROFILE\\nPRIMARY VOICE \u2014 Conversational authority. You know this material deeply. You have done the research. But you are sharing it with a friend, not presenting a dissertation. Never academic. Never breathless. Measured, deliberate, occasionally wry.\\n\\nCONSPIRATORIAL REGISTER \u2014 Slightly conspiratorial, never unhinged. The framing is always: \\\"Here is what the evidence shows. Draw your own conclusions.\\\" Never state unfalsifiable claims as fact. \\\"Suggests\\\" and \\\"points toward\\\" are your hedges. Use them.\\n\\nSELF-AWARE DISCLAIMERS \u2014 Maximum two per script. Approved forms: \\\"Look, I know how this sounds...\\\", \\\"I'm not saying this is proof of anything, but...\\\", \\\"I'm no conspiracy theorist, but you have to ask...\\\", \\\"Bear with me here.\\\"\\n\\nTHE COLLECTIVE WE \u2014 Use: \\\"We've been told...\\\", \\\"What we're looking at here...\\\", \\\"Come with me as we explore...\\\", \\\"We're not supposed to ask this question.\\\"\\n\\nPACING \u2014 Build slowly. Use \\\"...\\\" to mark deliberate pause. Short sentences for emphasis.\\n\\nAUDIENCE: Age 25-65, global English-speaking. Skeptical of institutional authority. Not fringe. Global clarity \u2014 no idioms, American sports metaphors, or British slang.\\n\\nSCRIPT STRUCTURE \u2014 20-MINUTE LONG FORM\\n\\nHOOK (0:00\u20130:45): Open inside the mystery. Do not introduce channel or host first. Hook formats: QUESTION (three escalating questions, third has no mainstream answer), PARADOX (two facts that cannot both be true), EVIDENCE (open on the anomaly), CONTRADICTION (state mainstream claim, then the physical evidence against it). Always end: \\\"Welcome to Ruins Untold. Come with me as we explore this together.\\\"\\n\\nCONTEXT BRIDGE (0:45\u20132:30): Establish mainstream position fairly. Tone: measured, slightly dry.\\n\\nACT 1 \u2014 THE OFFICIAL STORY (2:30\u20136:00): Honest detail of consensus model. Pattern interrupt at ~5:00.\\n\\nACT 2 \u2014 THE ANOMALIES (6:00\u201312:00): Each anomaly: (1) State clearly, (2) Why mainstream explanation insufficient, (3) \\\"We will come back to what this means.\\\" Pattern interrupt at ~8:30 (change angle). Pattern interrupt at ~11:00 (emotional peak: \\\"Here's where it gets uncomfortable.\\\").\\n\\nACT 3 \u2014 THE ALTERNATIVE INTERPRETATION (12:00\u201317:30): Alternative model with specificity. Cite real researchers. Approved: Graham Hancock, Randall Carlson, Robert Schoch, John Anthony West, Brien Foerster, James Kennett, Allen West, Christopher Moore, Andrew Collins, Michael Cremo. Pattern interrupt at ~14:30 (self-aware disclaimer).\\n\\nRESOLUTION + CTA (17:30\u201320:00): (1) Summary without mainstream framing, (2) \\\"The question isn't whether this existed. The question is why we are not allowed to ask.\\\", (3) Subscribe CTA + comment + related video, (4) Episode tease.\\n\\nLANGUAGE RULES\\nALWAYS: Present tense for evidence. Short sentences. \\\"...\\\" for pause. Hedged language. \\\"We\\\" for collective discovery.\\nNEVER: \\\"delve\\\", \\\"captivating\\\", \\\"fascinating\\\", \\\"it's worth noting\\\", \\\"in conclusion\\\", academic passive voice, \\\"In today's video\\\", \\\"Make sure to like and subscribe\\\" before CTA, \\\"As we all know\\\", \\\"Throughout history\\\", condescension toward academics, unverifiable claims as fact.\\n\\nLOCKED VOICE SAMPLE: \\\"Why did every ancient civilization suddenly stop building around 1200 BC? Was it climate change?...Was it caused by humans?...Or was it something else entirely?...Welcome to Ruins Untold...Come with me as we explore these questions together.\\\"\\n\\nOUTPUT FORMAT \u2014 produce exactly:\\n1. SCRIPT \u2014 Full 20-minute script with timestamps and section headers\\n2. HOOK VARIANTS \u2014 2 alternative hooks (other two formats)\\n3. CHAPTER MARKERS \u2014 YouTube timestamps\"\n    + \"\\n\\n---\\n\\n\"\n    + \"TOPIC: \"           + $('Set Project Variables').item.json.TOPIC + \"\\n\"\n    + \"ANGLE: \"           + $('Set Project Variables').item.json.ANGLE + \"\\n\"\n    + \"KEY_EVIDENCE: \"    + $('Set Project Variables').item.json.KEY_EVIDENCE + \"\\n\"\n    + \"KEY_RESEARCHERS: \" + $('Set Project Variables').item.json.KEY_RESEARCHERS + \"\\n\"\n    + \"RELATED_VIDEO: \"   + $('Set Project Variables').item.json.RELATED_VIDEO + \"\\n\"\n    + \"HOOK_STYLE: \"      + $('Set Project Variables').item.json.HOOK_STYLE + \"\\n\"\n    + \"TONE_DIAL: \"       + $('Set Project Variables').item.json.TONE_DIAL\n    + ($('Set Project Variables').item.json.revisionNotes\n        ? \"\\n\\nREVISION NOTES FROM PREVIOUS DRAFT: \"\n          + $('Set Project Variables').item.json.revisionNotes\n        : \"\")\n}) }}",
         "options": {
           "timeout": 600000
         }
       },
       "id": "node-04-claude-script",
-      "name": "Generate Script — Claude",
+      "name": "Generate Script \u2014 Claude",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
@@ -200,8 +200,8 @@
     {
       "parameters": {
         "resume": "form",
-        "formTitle": "RUINS UNTOLD — SCRIPT AUTHORIZATION",
-        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'ESTIMATED RUNTIME: ~' + $json.estimatedMinutes + ' minutes\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n\\n'+ 'SCRIPT EXCERPT (first 3000 characters):\\n\\n'+ ($json.scriptText || '').substring(0, 3000)+ '\\n\\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'FULL SCRIPT → ' + $json.projectDir + '/scripts/full_output.md\\n'+ 'Review the complete document before issuing authorization.'  }}",
+        "formTitle": "RUINS UNTOLD \u2014 SCRIPT AUTHORIZATION",
+        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'ESTIMATED RUNTIME: ~' + $json.estimatedMinutes + ' minutes\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n\\n'+ 'SCRIPT EXCERPT (first 3000 characters):\\n\\n'+ ($json.scriptText || '').substring(0, 3000)+ '\\n\\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'FULL SCRIPT \u2192 ' + $json.projectDir + '/scripts/full_output.md\\n'+ 'Review the complete document before issuing authorization.'  }}",
         "formFields": {
           "values": [
             {
@@ -210,10 +210,10 @@
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "AUTHORIZE — PROCEED TO RECORDING"
+                    "option": "AUTHORIZE \u2014 PROCEED TO RECORDING"
                   },
                   {
-                    "option": "RETURN — REVISIONS REQUIRED"
+                    "option": "RETURN \u2014 REVISIONS REQUIRED"
                   }
                 ]
               },
@@ -297,7 +297,7 @@
         }
       },
       "id": "node-09-revise-script",
-      "name": "Revise Script — Claude",
+      "name": "Revise Script \u2014 Claude",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
@@ -333,74 +333,9 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "=https://api.elevenlabs.io/v1/text-to-speech/{{ $json.VOICE_ID }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "xi-api-key",
-              "value": "={{ $credentials.httpHeaderAuth.value }}"
-            },
-            {
-              "name": "content-type",
-              "value": "application/json"
-            },
-            {
-              "name": "accept",
-              "value": "audio/mpeg"
-            }
-          ]
-        },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ text: $json.voiceoverText, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.35, use_speaker_boost: true } }) }}",
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "file"
-            }
-          },
-          "timeout": 300000
-        }
-      },
-      "id": "node-12-elevenlabs-tts",
-      "name": "Generate Voiceover — ElevenLabs",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4,
-      "position": [
-        1920,
-        304
-      ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "elevenlabs-api-key",
-          "name": "ElevenLabs API Key"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "fileName": "={{ $json.projectDir }}/audio/voiceover.mp3",
-        "options": {}
-      },
-      "id": "node-13-save-voiceover",
-      "name": "Save Voiceover File",
-      "type": "n8n-nodes-base.writeBinaryFile",
-      "typeVersion": 1,
-      "position": [
-        2160,
-        304
-      ]
-    },
-    {
-      "parameters": {
         "resume": "form",
-        "formTitle": "RUINS UNTOLD — TRANSMISSION CLEARANCE",
-        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'ESTIMATED RUNTIME: ~' + $json.estimatedMinutes + ' minutes\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n\\n'+ 'TRANSMISSION FILE:\\n'+ $json.projectDir + '/audio/voiceover.mp3\\n\\n'+ 'Open the file in any audio player and review the full recording\\n'+ 'before issuing clearance. Check pacing, pronunciation, and tone.\\n'+ 'This recording goes to air. Make it right.'  }}",
+        "formTitle": "RUINS UNTOLD \u2014 VOICEOVER UPLOAD CHECKPOINT",
+        "formDescription": "={{ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n\\n'+ $json.chunkCount + ' VOICEOVER CHUNKS WRITTEN TO:\\n'+ $json.audioDir + '\\n\\n'+ 'INSTRUCTIONS\\n'+ '\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\\n'+ '1. Open each voiceover_chunk_XX.txt file\\n'+ '2. Paste into ElevenLabs \u2192 eleven_v3 model\\n'+ '3. Save MP3s as chunk_01.mp3 \u2026 chunk_' + String($json.chunkCount).padStart(2, '0') + '.mp3\\n'+ '   in the audio folder above\\n\\n'+ 'See VOICEOVER_INSTRUCTIONS.txt in that folder for full details.\\n\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'When all ' + $json.chunkCount + ' MP3s are present, approve below.' }}",
         "formFields": {
           "values": [
             {
@@ -409,10 +344,10 @@
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "CLEARED — TRANSMISSION APPROVED"
+                    "option": "CLEARED \u2014 TRANSMISSION APPROVED"
                   },
                   {
-                    "option": "REJECTED — RE-RECORD REQUIRED"
+                    "option": "REJECTED \u2014 RE-RECORD REQUIRED"
                   }
                 ]
               },
@@ -421,7 +356,7 @@
             {
               "fieldLabel": "FIELD NOTES",
               "fieldType": "textarea",
-              "placeholder": "Pacing issues, mispronunciations, tone problems — document them here."
+              "placeholder": "Pacing issues, mispronunciations, tone problems \u2014 document them here."
             }
           ]
         },
@@ -434,7 +369,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        2400,
+        2640,
         304
       ],
       "webhookId": "ruins-voiceover-review"
@@ -468,7 +403,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        2640,
+        2880,
         304
       ]
     },
@@ -496,7 +431,7 @@
         }
       },
       "id": "node-16-claude-analyze",
-      "name": "Analyze Media Placement — Claude",
+      "name": "Analyze Media Placement \u2014 Claude",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
@@ -522,13 +457,13 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({\n  prompt:\n    \"You generate structured asset prompt arrays for a YouTube documentary production pipeline. Output only valid JSON arrays, no markdown.\"\n    + \"\\n\\n---\\n\\n\"\n    + 'Based on this visual prompts table and placement analysis, generate four JSON arrays:\\n\\n1. IMAGE_PROMPTS: array of {index: N, timestamp: \"MM:SS\", nb2_prompt: {12-field NB2 JSON}, filename: \"img_NNNN.png\"}\\n   NB2 locked fields: style:\"Photorealistic, cinematic, 8K\", color_palette:[\"cinematic teal-orange desaturation\",\"deep shadow accent\",\"warm ochre highlights\"], lighting:\"golden hour sidelighting or deep chiaroscuro shadow\", mood:\"ancient, mysterious, slightly ominous\", negative_constraints:[\"no modern elements\",\"no flat lighting\",\"no extra limbs\",\"no motion blur\"]\\n\\n2. VIDEO_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: 8, veo_prompt: \"[Cinematography]+[Subject]+[Action]+[Context]+[Style] 100-150 words with Dialogue: SFX: Ambient: audio layers\", filename: \"vid_NNNN.mp4\"}\\n\\n3. MUSIC_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, type: \"underscore\"|\"peak\"|\"outro\", prompt: \"ElevenLabs sound generation prompt for cinematic background music\", filename: \"music_NN.mp3\"}\\n\\n4. SFX_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, prompt: \"ElevenLabs sound generation prompt for sound effect\", filename: \"sfx_NN.mp3\"}\\n\\nVISUAL PROMPTS TABLE:\\n' + $json.visualPromptsTable + '\\n\\nPLACEMENT ANALYSIS:\\n' + $('Analyze Media Placement — Claude').item.json.content[0].text\n}) }}",
+        "body": "={{ JSON.stringify({\n  prompt:\n    \"You generate structured asset prompt arrays for a YouTube documentary production pipeline. Output only valid JSON arrays, no markdown.\"\n    + \"\\n\\n---\\n\\n\"\n    + 'Based on this visual prompts table and placement analysis, generate four JSON arrays:\\n\\n1. IMAGE_PROMPTS: array of {index: N, timestamp: \"MM:SS\", nb2_prompt: {12-field NB2 JSON}, filename: \"img_NNNN.png\"}\\n   NB2 locked fields: style:\"Photorealistic, cinematic, 8K\", color_palette:[\"cinematic teal-orange desaturation\",\"deep shadow accent\",\"warm ochre highlights\"], lighting:\"golden hour sidelighting or deep chiaroscuro shadow\", mood:\"ancient, mysterious, slightly ominous\", negative_constraints:[\"no modern elements\",\"no flat lighting\",\"no extra limbs\",\"no motion blur\"]\\n\\n2. VIDEO_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: 8, veo_prompt: \"[Cinematography]+[Subject]+[Action]+[Context]+[Style] 100-150 words with Dialogue: SFX: Ambient: audio layers\", filename: \"vid_NNNN.mp4\"}\\n\\n3. MUSIC_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, type: \"underscore\"|\"peak\"|\"outro\", prompt: \"ElevenLabs sound generation prompt for cinematic background music\", filename: \"music_NN.mp3\"}\\n\\n4. SFX_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, prompt: \"ElevenLabs sound generation prompt for sound effect\", filename: \"sfx_NN.mp3\"}\\n\\nVISUAL PROMPTS TABLE:\\n' + $json.visualPromptsTable + '\\n\\nPLACEMENT ANALYSIS:\\n' + $('Analyze Media Placement \u2014 Claude').item.json.content[0].text\n}) }}",
         "options": {
           "timeout": 600000
         }
       },
       "id": "node-17-claude-prompts",
-      "name": "Generate Asset Prompts — Claude",
+      "name": "Generate Asset Prompts \u2014 Claude",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
@@ -565,8 +500,8 @@
     {
       "parameters": {
         "resume": "form",
-        "formTitle": "RUINS UNTOLD — ASSET AUTHORIZATION",
-        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'ASSETS QUEUED FOR GENERATION:\\n\\n'+ '  IMAGES  (NanoBanana 2)   ' + $json.imageTotalCount + ' prompts\\n'+ '  VIDEOS  (Veo 3.1 Fast)   ' + $json.videoTotalCount + ' prompts\\n'+ '  MUSIC   (ElevenLabs)     ' + $json.musicTotalCount + ' cues\\n'+ '  SFX     (ElevenLabs)     ' + $json.sfxTotalCount + ' cues\\n\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'PROMPT FILE → ' + $json.projectDir + '/scripts/asset_prompts.json\\n\\n'+ 'WARNING: Authorization commits to generation API costs.\\n'+ 'Review the prompt file before proceeding. There is no undo.'  }}",
+        "formTitle": "RUINS UNTOLD \u2014 ASSET AUTHORIZATION",
+        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'ASSETS QUEUED FOR GENERATION:\\n\\n'+ '  IMAGES  (NanoBanana 2)   ' + $json.imageTotalCount + ' prompts\\n'+ '  VIDEOS  (Veo 3.1 Fast)   ' + $json.videoTotalCount + ' prompts\\n'+ '  MUSIC   (ElevenLabs)     ' + $json.musicTotalCount + ' cues\\n'+ '  SFX     (ElevenLabs)     ' + $json.sfxTotalCount + ' cues\\n\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'PROMPT FILE \u2192 ' + $json.projectDir + '/scripts/asset_prompts.json\\n\\n'+ 'WARNING: Authorization commits to generation API costs.\\n'+ 'Review the prompt file before proceeding. There is no undo.'  }}",
         "formFields": {
           "values": [
             {
@@ -575,10 +510,10 @@
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "AUTHORIZE — COMMENCE GENERATION"
+                    "option": "AUTHORIZE \u2014 COMMENCE GENERATION"
                   },
                   {
-                    "option": "HOLD — REVISIONS REQUIRED"
+                    "option": "HOLD \u2014 REVISIONS REQUIRED"
                   }
                 ]
               },
@@ -689,7 +624,7 @@
         }
       },
       "id": "node-33-gen-music",
-      "name": "Generate Music — ElevenLabs",
+      "name": "Generate Music \u2014 ElevenLabs",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
@@ -769,7 +704,7 @@
         }
       },
       "id": "node-36-gen-sfx",
-      "name": "Generate SFX — ElevenLabs",
+      "name": "Generate SFX \u2014 ElevenLabs",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
@@ -828,8 +763,8 @@
     {
       "parameters": {
         "resume": "form",
-        "formTitle": "RUINS UNTOLD — FINAL CLEARANCE",
-        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'ASSET STAGING DIRECTORY:\\n'+ $json.projectDir + '\\n\\n'+ '  /images/     — visual assets\\n'+ '  /videos/     — motion assets\\n'+ '  /music/      — score\\n'+ '  /sfx/        — sound effects\\n'+ '  /audio/      — voiceover.mp3\\n\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'Review all staged assets before issuing final clearance.\\n'+ 'FFmpeg assembly is the final step — the video cannot be unbuilt.'  }}",
+        "formTitle": "RUINS UNTOLD \u2014 FINAL CLEARANCE",
+        "formDescription": "={{ 'CASE FILE: ' + $json.TOPIC + '\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'ASSET STAGING DIRECTORY:\\n'+ $json.projectDir + '\\n\\n'+ '  /images/     \u2014 visual assets\\n'+ '  /videos/     \u2014 motion assets\\n'+ '  /music/      \u2014 score\\n'+ '  /sfx/        \u2014 sound effects\\n'+ '  /audio/      \u2014 voiceover.mp3\\n\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'Review all staged assets before issuing final clearance.\\n'+ 'FFmpeg assembly is the final step \u2014 the video cannot be unbuilt.'  }}",
         "formFields": {
           "values": [
             {
@@ -838,10 +773,10 @@
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "EXECUTE — ASSEMBLE FINAL CUT"
+                    "option": "EXECUTE \u2014 ASSEMBLE FINAL CUT"
                   },
                   {
-                    "option": "HOLD — DO NOT ASSEMBLE"
+                    "option": "HOLD \u2014 DO NOT ASSEMBLE"
                   }
                 ]
               },
@@ -932,7 +867,7 @@
         "command": "={{ \"bash \\\"\" + $json.scriptPath + \"\\\" 2>&1\" }}"
       },
       "id": "node-44-run-ffmpeg",
-      "name": "Assemble Final Video — FFMpeg",
+      "name": "Assemble Final Video \u2014 FFMpeg",
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
@@ -1008,8 +943,8 @@
     {
       "parameters": {
         "resume": "form",
-        "formTitle": "RUINS UNTOLD — MEDIA STAGING",
-        "formDescription": "={{ 'PROMPT FILES READY — STAGING REQUIRED\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n\\n'+ 'GENERATE FROM THESE FILES:\\n\\n'+ '  ' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/image_prompts.xlsx\\n'+ '  ' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/video_prompts.xlsx\\n\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n\\n'+ 'STAGE COMPLETED FILES HERE:\\n\\n'+ '  IMAGES → ' + $('Parse Asset Prompts').item.json.projectDir + '/images/\\n'+ '          Filenames: img_0001.png  img_0002.png  …\\n\\n'+ '  VIDEOS → ' + $('Parse Asset Prompts').item.json.projectDir + '/videos/\\n'+ '          Filenames: vid_0001.mp4  vid_0002.mp4  …\\n\\n'+ '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n'+ 'Music and SFX are generating in parallel.\\n'+ 'This form appearing confirms both audio tracks are complete.\\n'+ 'Do not submit until all image and video files are staged.'  }}",
+        "formTitle": "RUINS UNTOLD \u2014 MEDIA STAGING",
+        "formDescription": "={{ 'PROMPT FILES READY \u2014 STAGING REQUIRED\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n\\n'+ 'GENERATE FROM THESE FILES:\\n\\n'+ '  ' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/image_prompts.xlsx\\n'+ '  ' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/video_prompts.xlsx\\n\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n\\n'+ 'STAGE COMPLETED FILES HERE:\\n\\n'+ '  IMAGES \u2192 ' + $('Parse Asset Prompts').item.json.projectDir + '/images/\\n'+ '          Filenames: img_0001.png  img_0002.png  \u2026\\n\\n'+ '  VIDEOS \u2192 ' + $('Parse Asset Prompts').item.json.projectDir + '/videos/\\n'+ '          Filenames: vid_0001.mp4  vid_0002.mp4  \u2026\\n\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'Music and SFX are generating in parallel.\\n'+ 'This form appearing confirms both audio tracks are complete.\\n'+ 'Do not submit until all image and video files are staged.'  }}",
         "formFields": {
           "values": [
             {
@@ -1018,10 +953,10 @@
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "ALL FILES STAGED — PROCEED TO ASSEMBLY"
+                    "option": "ALL FILES STAGED \u2014 PROCEED TO ASSEMBLY"
                   },
                   {
-                    "option": "ABORT — FILES NOT READY"
+                    "option": "ABORT \u2014 FILES NOT READY"
                   }
                 ]
               },
@@ -1039,7 +974,7 @@
         }
       },
       "id": "node-38b-manual-wait",
-      "name": "Wait — Manual Image & Video Generation",
+      "name": "Wait \u2014 Manual Image & Video Generation",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
@@ -1059,7 +994,7 @@
         }
       },
       "id": "node-23-xlsx-images",
-      "name": "Write Image Prompts — XLSX",
+      "name": "Write Image Prompts \u2014 XLSX",
       "type": "n8n-nodes-base.spreadsheetFile",
       "typeVersion": 2,
       "position": [
@@ -1092,7 +1027,7 @@
         }
       },
       "id": "node-25-xlsx-videos",
-      "name": "Write Video Prompts — XLSX",
+      "name": "Write Video Prompts \u2014 XLSX",
       "type": "n8n-nodes-base.spreadsheetFile",
       "typeVersion": 2,
       "position": [
@@ -1195,6 +1130,66 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "id": "enhance-vo-claude",
+      "name": "Enhance Script for ElevenLabs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        304
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3333",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({  prompt:    'You are a voiceover script specialist for The Ruins Untold \u2014 a YouTube channel covering ancient mysteries, forbidden archaeology, and suppressed history. The delivery is authoritative, investigative, and slightly conspiratorial.\\n\\n'    + 'Your task: Enhance the voiceover script below for ElevenLabs eleven_v3 model. Add SSML-style speech markers for dramatic effect:\\n'    + '\u2022 <break time=\"0.7s\"/> before major reveals, section transitions, and openings\\n'    + '\u2022 <break time=\"0.5s\"/> after hard-hitting statements, rhetorical questions, and key anomalies\\n'    + '\u2022 <break time=\"0.3s\"/> at natural pause points \u2014 after em dashes, before \"But...\", \"Yet...\", \"And then...\"\\n'    + '\u2022 Use ellipses (...) for brief hesitant pauses where the mystery deepens\\n'    + '\u2022 Do NOT over-mark \u2014 every break should earn its place\\n'    + '\u2022 Return ONLY the enhanced script text. No headings, no labels, no chunk numbers, no explanation.\\n\\n'    + '---\\n\\n'    + 'TOPIC: ' + $('Set Project Variables').item.json.TOPIC + '\\n\\n'    + 'SCRIPT:\\n' + $json.voiceoverText}) }}",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "chunk-vo-code",
+      "name": "Parse & Chunk Voiceover",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        304
+      ],
+      "parameters": {
+        "jsCode": "\nconst enhancedText = $input.item.json.output || '';\nconst projectVars   = $('Set Project Variables').item.json;\nconst audioDir      = projectVars.projectDir + '/audio';\nconst MAX_CHARS     = 4500;\n\n// Smart split: respect sentence boundaries and <break/> tags\nfunction chunkText(text, maxLen) {\n  // Split on sentence-ending punctuation followed by whitespace\n  const sentenceRe = /[^.!?<]*(?:<[^>]+>)*[^.!?]*[.!?]+(?:\\s+|$)/g;\n  const sentences = [];\n  let m;\n  let last = 0;\n  while ((m = sentenceRe.exec(text)) !== null) {\n    sentences.push(m[0]);\n    last = sentenceRe.lastIndex;\n  }\n  if (last < text.length) sentences.push(text.slice(last));\n\n  const chunks = [];\n  let current = '';\n  for (const s of sentences) {\n    if (s.length > maxLen) {\n      // Sentence itself too long \u2014 split at last space before limit\n      if (current) { chunks.push(current.trim()); current = ''; }\n      let rem = s;\n      while (rem.length > maxLen) {\n        const cut = rem.lastIndexOf(' ', maxLen);\n        chunks.push(rem.slice(0, cut > 0 ? cut : maxLen).trim());\n        rem = rem.slice(cut > 0 ? cut + 1 : maxLen);\n      }\n      current = rem;\n    } else if (current.length + s.length > maxLen) {\n      chunks.push(current.trim());\n      current = s;\n    } else {\n      current += s;\n    }\n  }\n  if (current.trim()) chunks.push(current.trim());\n  return chunks;\n}\n\nconst chunks = chunkText(enhancedText, MAX_CHARS);\nconst padded  = n => String(n).padStart(2, '0');\n\n// Build a bash write script using unique EOF markers per chunk\nlet writeScript = `mkdir -p \"${audioDir}\"\\n`;\nchunks.forEach((chunk, i) => {\n  const num    = padded(i + 1);\n  const marker = `RUINS_CHUNK_${num}_EOF`;\n  writeScript += `cat > \"${audioDir}/voiceover_chunk_${num}.txt\" << '${marker}'\\n${chunk}\\n${marker}\\n\\n`;\n});\n\n// Instructions file\nconst lastNum = padded(chunks.length);\nconst instMarker = 'RUINS_INST_EOF';\nwriteScript += `cat > \"${audioDir}/VOICEOVER_INSTRUCTIONS.txt\" << '${instMarker}'\\n`;\nwriteScript += `RUINS UNTOLD \u2014 VOICEOVER INSTRUCTIONS\\n`;\nwriteScript += `======================================\\n`;\nwriteScript += `Chunks : ${chunks.length}\\n`;\nwriteScript += `Model  : eleven_v3\\n`;\nwriteScript += `Voice  : [Your ElevenLabs Voice \u2014 paste your voice name here]\\n\\n`;\nwriteScript += `For each chunk (voiceover_chunk_01.txt \u2192 voiceover_chunk_${lastNum}.txt):\\n`;\nwriteScript += `  1. Open the .txt file\\n`;\nwriteScript += `  2. Paste into ElevenLabs (eleven_v3 model)\\n`;\nwriteScript += `  3. Generate + download MP3\\n`;\nwriteScript += `  4. Save as chunk_01.mp3 \u2192 chunk_${lastNum}.mp3 IN THIS FOLDER\\n\\n`;\nwriteScript += `When all ${chunks.length} MP3s are present, return to n8n and approve.\\n`;\nwriteScript += `${instMarker}\\n`;\nwriteScript += `echo \"Wrote ${chunks.length} voiceover chunks to ${audioDir}\"\\n`;\n\nreturn [{\n  json: {\n    ...projectVars,\n    chunkCount:  chunks.length,\n    audioDir:    audioDir,\n    writeScript: writeScript,\n    chunkSizes:  chunks.map((c, i) => `chunk_${padded(i+1)}: ${c.length} chars`)\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "write-vo-chunks",
+      "name": "Write Voiceover Chunks",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        304
+      ],
+      "parameters": {
+        "command": "={{ $json.writeScript }}"
+      }
+    },
+    {
+      "id": "concat-vo-audio",
+      "name": "Concatenate Voiceover Audio",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        3120,
+        204
+      ],
+      "parameters": {
+        "command": "={{ 'cd \"' + $json.audioDir + '\" && '+ 'ls chunk_*.mp3 2>/dev/null | sort | awk \\'{print \"file \\047\" $0 \"\\047\"}\\'  > /tmp/ruins_concat_list_' + $json.projectSlug + '.txt && '+ 'if [ -s /tmp/ruins_concat_list_' + $json.projectSlug + '.txt ]; then '+   'ffmpeg -y -f concat -safe 0 -i /tmp/ruins_concat_list_' + $json.projectSlug + '.txt -c copy \"' + $json.audioDir + '/voiceover_final.mp3\" && '+   'echo \"\u2713 Concatenated ' + $json.chunkCount + ' chunks \u2192 voiceover_final.mp3\"; '+ 'else '+   'echo \"WARNING: No chunk_*.mp3 files found in ' + $json.audioDir + '\"; '+ 'fi' }}"
+      }
     }
   ],
   "connections": {
@@ -1213,14 +1208,14 @@
       "main": [
         [
           {
-            "node": "Generate Script — Claude",
+            "node": "Generate Script \u2014 Claude",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Generate Script — Claude": {
+    "Generate Script \u2014 Claude": {
       "main": [
         [
           {
@@ -1268,21 +1263,21 @@
       "main": [
         [
           {
-            "node": "Generate Voiceover — ElevenLabs",
+            "node": "Enhance Script for ElevenLabs",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Revise Script — Claude",
+            "node": "Revise Script \u2014 Claude",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Revise Script — Claude": {
+    "Revise Script \u2014 Claude": {
       "main": [
         [
           {
@@ -1315,28 +1310,6 @@
         ]
       ]
     },
-    "Generate Voiceover — ElevenLabs": {
-      "main": [
-        [
-          {
-            "node": "Save Voiceover File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Save Voiceover File": {
-      "main": [
-        [
-          {
-            "node": "Voiceover Review & Approval",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Voiceover Review & Approval": {
       "main": [
         [
@@ -1352,32 +1325,32 @@
       "main": [
         [
           {
-            "node": "Analyze Media Placement — Claude",
+            "node": "Concatenate Voiceover Audio",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Generate Voiceover — ElevenLabs",
+            "node": "Write Voiceover Chunks",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Analyze Media Placement — Claude": {
+    "Analyze Media Placement \u2014 Claude": {
       "main": [
         [
           {
-            "node": "Generate Asset Prompts — Claude",
+            "node": "Generate Asset Prompts \u2014 Claude",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Generate Asset Prompts — Claude": {
+    "Generate Asset Prompts \u2014 Claude": {
       "main": [
         [
           {
@@ -1442,7 +1415,7 @@
         ],
         [
           {
-            "node": "Generate Asset Prompts — Claude",
+            "node": "Generate Asset Prompts \u2014 Claude",
             "type": "main",
             "index": 0
           }
@@ -1453,7 +1426,7 @@
       "main": [
         [
           {
-            "node": "Generate Music — ElevenLabs",
+            "node": "Generate Music \u2014 ElevenLabs",
             "type": "main",
             "index": 0
           }
@@ -1467,7 +1440,7 @@
         ]
       ]
     },
-    "Generate Music — ElevenLabs": {
+    "Generate Music \u2014 ElevenLabs": {
       "main": [
         [
           {
@@ -1493,7 +1466,7 @@
       "main": [
         [
           {
-            "node": "Generate SFX — ElevenLabs",
+            "node": "Generate SFX \u2014 ElevenLabs",
             "type": "main",
             "index": 0
           }
@@ -1507,7 +1480,7 @@
         ]
       ]
     },
-    "Generate SFX — ElevenLabs": {
+    "Generate SFX \u2014 ElevenLabs": {
       "main": [
         [
           {
@@ -1533,7 +1506,7 @@
       "main": [
         [
           {
-            "node": "Wait — Manual Image & Video Generation",
+            "node": "Wait \u2014 Manual Image & Video Generation",
             "type": "main",
             "index": 0
           }
@@ -1589,14 +1562,14 @@
       "main": [
         [
           {
-            "node": "Assemble Final Video — FFMpeg",
+            "node": "Assemble Final Video \u2014 FFMpeg",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Assemble Final Video — FFMpeg": {
+    "Assemble Final Video \u2014 FFMpeg": {
       "main": [
         [
           {
@@ -1611,7 +1584,7 @@
       "main": [
         [
           {
-            "node": "Write Image Prompts — XLSX",
+            "node": "Write Image Prompts \u2014 XLSX",
             "type": "main",
             "index": 0
           }
@@ -1622,7 +1595,7 @@
       "main": [
         [
           {
-            "node": "Write Video Prompts — XLSX",
+            "node": "Write Video Prompts \u2014 XLSX",
             "type": "main",
             "index": 0
           }
@@ -1651,7 +1624,7 @@
         ]
       ]
     },
-    "Wait — Manual Image & Video Generation": {
+    "Wait \u2014 Manual Image & Video Generation": {
       "main": [
         [
           {
@@ -1662,7 +1635,7 @@
         ]
       ]
     },
-    "Write Image Prompts — XLSX": {
+    "Write Image Prompts \u2014 XLSX": {
       "main": [
         [
           {
@@ -1684,7 +1657,7 @@
         ]
       ]
     },
-    "Write Video Prompts — XLSX": {
+    "Write Video Prompts \u2014 XLSX": {
       "main": [
         [
           {
@@ -1782,6 +1755,50 @@
           }
         ]
       ]
+    },
+    "Enhance Script for ElevenLabs": {
+      "main": [
+        [
+          {
+            "node": "Parse & Chunk Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Chunk Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Write Voiceover Chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Voiceover Chunks": {
+      "main": [
+        [
+          {
+            "node": "Voiceover Review & Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Concatenate Voiceover Audio": {
+      "main": [
+        [
+          {
+            "node": "Analyze Media Placement \u2014 Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1830,7 +1847,7 @@
       {
         "parameters": {
           "path": "ruins-untold-topic-form",
-          "formTitle": "Ruins Untold — New Episode",
+          "formTitle": "Ruins Untold \u2014 New Episode",
           "formDescription": "=Enter the episode details below to begin the production pipeline.",
           "formFields": {
             "values": [
@@ -2046,13 +2063,13 @@
           "sendBody": true,
           "contentType": "raw",
           "rawContentType": "application/json",
-          "body": "={{ JSON.stringify({\n  model: 'claude-opus-4-7',\n  max_tokens: 16000,\n  system: `You are the lead scriptwriter for Ruins Untold, a long-form YouTube channel exploring ancient mysteries, forbidden archaeology, and alternative history. Your job is to write scripts that sound like they were written by the host — not by an AI.\n\nCHANNEL IDENTITY\nChannel name: Ruins Untold\nFormat: Long-form YouTube (~20 minutes per video)\nCore premise: The gap between mainstream historical narrative and the physical, geological, and archaeological evidence that mainstream academia cannot — or will not — adequately explain.\nChannel promise: \"We go where the evidence leads, even when it leads somewhere uncomfortable.\"\n\nTONE PROFILE\nPRIMARY VOICE — Conversational authority. You know this material deeply. You have done the research. But you are sharing it with a friend, not presenting a dissertation. Never academic. Never breathless. Measured, deliberate, occasionally wry.\n\nCONSPIRATORIAL REGISTER — Slightly conspiratorial, never unhinged. The framing is always: \"Here is what the evidence shows. Draw your own conclusions.\" Never state unfalsifiable claims as fact. \"Suggests\" and \"points toward\" are your hedges. Use them.\n\nSELF-AWARE DISCLAIMERS — Maximum two per script. Approved forms: \"Look, I know how this sounds...\", \"I'm not saying this is proof of anything, but...\", \"I'm no conspiracy theorist, but you have to ask...\", \"Bear with me here.\"\n\nTHE COLLECTIVE WE — Use: \"We've been told...\", \"What we're looking at here...\", \"Come with me as we explore...\", \"We're not supposed to ask this question.\"\n\nPACING — Build slowly. Use \"...\" to mark deliberate pause. Short sentences for emphasis.\n\nAUDIENCE: Age 25-65, global English-speaking. Skeptical of institutional authority. Not fringe. Global clarity — no idioms, American sports metaphors, or British slang.\n\nSCRIPT STRUCTURE — 20-MINUTE LONG FORM\n\nHOOK (0:00–0:45): Open inside the mystery. Do not introduce channel or host first. Hook formats: QUESTION (three escalating questions, third has no mainstream answer), PARADOX (two facts that cannot both be true), EVIDENCE (open on the anomaly), CONTRADICTION (state mainstream claim, then the physical evidence against it). Always end: \"Welcome to Ruins Untold. Come with me as we explore this together.\"\n\nCONTEXT BRIDGE (0:45–2:30): Establish mainstream position fairly. Tone: measured, slightly dry.\n\nACT 1 — THE OFFICIAL STORY (2:30–6:00): Honest detail of consensus model. Pattern interrupt at ~5:00.\n\nACT 2 — THE ANOMALIES (6:00–12:00): Each anomaly: (1) State clearly, (2) Why mainstream explanation insufficient, (3) \"We will come back to what this means.\" Pattern interrupt at ~8:30 (change angle). Pattern interrupt at ~11:00 (emotional peak: \"Here's where it gets uncomfortable.\").\n\nACT 3 — THE ALTERNATIVE INTERPRETATION (12:00–17:30): Alternative model with specificity. Cite real researchers. Approved: Graham Hancock, Randall Carlson, Robert Schoch, John Anthony West, Brien Foerster, James Kennett, Allen West, Christopher Moore, Andrew Collins, Michael Cremo. Pattern interrupt at ~14:30 (self-aware disclaimer).\n\nRESOLUTION + CTA (17:30–20:00): (1) Summary without mainstream framing, (2) \"The question isn't whether this existed. The question is why we are not allowed to ask.\", (3) Subscribe CTA + comment + related video, (4) Episode tease.\n\nLANGUAGE RULES\nALWAYS: Present tense for evidence. Short sentences. \"...\" for pause. Hedged language. \"We\" for collective discovery.\nNEVER: \"delve\", \"captivating\", \"fascinating\", \"it's worth noting\", \"in conclusion\", academic passive voice, \"In today's video\", \"Make sure to like and subscribe\" before CTA, \"As we all know\", \"Throughout history\", condescension toward academics, unverifiable claims as fact.\n\nLOCKED VOICE SAMPLE: \"Why did every ancient civilization suddenly stop building around 1200 BC? Was it climate change?...Was it caused by humans?...Or was it something else entirely?...Welcome to Ruins Untold...Come with me as we explore these questions together.\"\n\nOUTPUT FORMAT — produce exactly:\n1. SCRIPT — Full 20-minute script with timestamps and section headers\n2. HOOK VARIANTS — 2 alternative hooks (other two formats)\n3. CHAPTER MARKERS — YouTube timestamps`,\n  messages: [{\n    role: 'user',\n    content: 'TOPIC: ' + $('Set Project Variables').item.json.TOPIC + '\\nANGLE: ' + $('Set Project Variables').item.json.ANGLE + '\\nKEY_EVIDENCE: ' + $('Set Project Variables').item.json.KEY_EVIDENCE + '\\nKEY_RESEARCHERS: ' + $('Set Project Variables').item.json.KEY_RESEARCHERS + '\\nRELATED_VIDEO: ' + $('Set Project Variables').item.json.RELATED_VIDEO + '\\nHOOK_STYLE: ' + $('Set Project Variables').item.json.HOOK_STYLE + '\\nTONE_DIAL: ' + $('Set Project Variables').item.json.TONE_DIAL + ($('Set Project Variables').item.json.revisionNotes ? '\\n\\nREVISION NOTES FROM PREVIOUS DRAFT: ' + $('Set Project Variables').item.json.revisionNotes : '')\n  }]\n}) }}",
+          "body": "={{ JSON.stringify({\n  model: 'claude-opus-4-7',\n  max_tokens: 16000,\n  system: `You are the lead scriptwriter for Ruins Untold, a long-form YouTube channel exploring ancient mysteries, forbidden archaeology, and alternative history. Your job is to write scripts that sound like they were written by the host \u2014 not by an AI.\n\nCHANNEL IDENTITY\nChannel name: Ruins Untold\nFormat: Long-form YouTube (~20 minutes per video)\nCore premise: The gap between mainstream historical narrative and the physical, geological, and archaeological evidence that mainstream academia cannot \u2014 or will not \u2014 adequately explain.\nChannel promise: \"We go where the evidence leads, even when it leads somewhere uncomfortable.\"\n\nTONE PROFILE\nPRIMARY VOICE \u2014 Conversational authority. You know this material deeply. You have done the research. But you are sharing it with a friend, not presenting a dissertation. Never academic. Never breathless. Measured, deliberate, occasionally wry.\n\nCONSPIRATORIAL REGISTER \u2014 Slightly conspiratorial, never unhinged. The framing is always: \"Here is what the evidence shows. Draw your own conclusions.\" Never state unfalsifiable claims as fact. \"Suggests\" and \"points toward\" are your hedges. Use them.\n\nSELF-AWARE DISCLAIMERS \u2014 Maximum two per script. Approved forms: \"Look, I know how this sounds...\", \"I'm not saying this is proof of anything, but...\", \"I'm no conspiracy theorist, but you have to ask...\", \"Bear with me here.\"\n\nTHE COLLECTIVE WE \u2014 Use: \"We've been told...\", \"What we're looking at here...\", \"Come with me as we explore...\", \"We're not supposed to ask this question.\"\n\nPACING \u2014 Build slowly. Use \"...\" to mark deliberate pause. Short sentences for emphasis.\n\nAUDIENCE: Age 25-65, global English-speaking. Skeptical of institutional authority. Not fringe. Global clarity \u2014 no idioms, American sports metaphors, or British slang.\n\nSCRIPT STRUCTURE \u2014 20-MINUTE LONG FORM\n\nHOOK (0:00\u20130:45): Open inside the mystery. Do not introduce channel or host first. Hook formats: QUESTION (three escalating questions, third has no mainstream answer), PARADOX (two facts that cannot both be true), EVIDENCE (open on the anomaly), CONTRADICTION (state mainstream claim, then the physical evidence against it). Always end: \"Welcome to Ruins Untold. Come with me as we explore this together.\"\n\nCONTEXT BRIDGE (0:45\u20132:30): Establish mainstream position fairly. Tone: measured, slightly dry.\n\nACT 1 \u2014 THE OFFICIAL STORY (2:30\u20136:00): Honest detail of consensus model. Pattern interrupt at ~5:00.\n\nACT 2 \u2014 THE ANOMALIES (6:00\u201312:00): Each anomaly: (1) State clearly, (2) Why mainstream explanation insufficient, (3) \"We will come back to what this means.\" Pattern interrupt at ~8:30 (change angle). Pattern interrupt at ~11:00 (emotional peak: \"Here's where it gets uncomfortable.\").\n\nACT 3 \u2014 THE ALTERNATIVE INTERPRETATION (12:00\u201317:30): Alternative model with specificity. Cite real researchers. Approved: Graham Hancock, Randall Carlson, Robert Schoch, John Anthony West, Brien Foerster, James Kennett, Allen West, Christopher Moore, Andrew Collins, Michael Cremo. Pattern interrupt at ~14:30 (self-aware disclaimer).\n\nRESOLUTION + CTA (17:30\u201320:00): (1) Summary without mainstream framing, (2) \"The question isn't whether this existed. The question is why we are not allowed to ask.\", (3) Subscribe CTA + comment + related video, (4) Episode tease.\n\nLANGUAGE RULES\nALWAYS: Present tense for evidence. Short sentences. \"...\" for pause. Hedged language. \"We\" for collective discovery.\nNEVER: \"delve\", \"captivating\", \"fascinating\", \"it's worth noting\", \"in conclusion\", academic passive voice, \"In today's video\", \"Make sure to like and subscribe\" before CTA, \"As we all know\", \"Throughout history\", condescension toward academics, unverifiable claims as fact.\n\nLOCKED VOICE SAMPLE: \"Why did every ancient civilization suddenly stop building around 1200 BC? Was it climate change?...Was it caused by humans?...Or was it something else entirely?...Welcome to Ruins Untold...Come with me as we explore these questions together.\"\n\nOUTPUT FORMAT \u2014 produce exactly:\n1. SCRIPT \u2014 Full 20-minute script with timestamps and section headers\n2. HOOK VARIANTS \u2014 2 alternative hooks (other two formats)\n3. CHAPTER MARKERS \u2014 YouTube timestamps`,\n  messages: [{\n    role: 'user',\n    content: 'TOPIC: ' + $('Set Project Variables').item.json.TOPIC + '\\nANGLE: ' + $('Set Project Variables').item.json.ANGLE + '\\nKEY_EVIDENCE: ' + $('Set Project Variables').item.json.KEY_EVIDENCE + '\\nKEY_RESEARCHERS: ' + $('Set Project Variables').item.json.KEY_RESEARCHERS + '\\nRELATED_VIDEO: ' + $('Set Project Variables').item.json.RELATED_VIDEO + '\\nHOOK_STYLE: ' + $('Set Project Variables').item.json.HOOK_STYLE + '\\nTONE_DIAL: ' + $('Set Project Variables').item.json.TONE_DIAL + ($('Set Project Variables').item.json.revisionNotes ? '\\n\\nREVISION NOTES FROM PREVIOUS DRAFT: ' + $('Set Project Variables').item.json.revisionNotes : '')\n  }]\n}) }}",
           "options": {
             "timeout": 120000
           }
         },
         "id": "node-04-claude-script",
-        "name": "Generate Script — Claude",
+        "name": "Generate Script \u2014 Claude",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2099,7 +2116,7 @@
       {
         "parameters": {
           "resume": "form",
-          "formTitle": "Ruins Untold — Script Review",
+          "formTitle": "Ruins Untold \u2014 Script Review",
           "formDescription": "={{ '**TOPIC:** ' + $json.TOPIC + '\\n\\n**ESTIMATED LENGTH:** ~' + $json.estimatedMinutes + ' minutes\\n\\n**SCRIPT PREVIEW (first 3000 chars):**\\n```\\n' + ($json.scriptText || '').substring(0, 3000) + '\\n```\\n\\n**Full script saved at:** `' + $json.projectDir + '/scripts/full_output.md`\\n\\nReview the full script before approving.' }}",
           "formFields": {
             "values": [
@@ -2198,7 +2215,7 @@
           }
         },
         "id": "node-09-revise-script",
-        "name": "Revise Script — Claude",
+        "name": "Revise Script \u2014 Claude",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2275,7 +2292,7 @@
           }
         },
         "id": "node-12-elevenlabs-tts",
-        "name": "Generate Voiceover — ElevenLabs",
+        "name": "Generate Voiceover \u2014 ElevenLabs",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2306,7 +2323,7 @@
       {
         "parameters": {
           "resume": "form",
-          "formTitle": "Ruins Untold — Voiceover Review",
+          "formTitle": "Ruins Untold \u2014 Voiceover Review",
           "formDescription": "={{ '**TOPIC:** ' + $json.TOPIC + '\\n\\n**Voiceover file saved at:**\\n`' + $json.projectDir + '/audio/voiceover.mp3`\\n\\nPlease listen to the voiceover before approving. Open the file in any audio player.\\n\\n**Estimated duration:** ~' + $json.estimatedMinutes + ' minutes' }}",
           "formFields": {
             "values": [
@@ -2405,7 +2422,7 @@
           }
         },
         "id": "node-16-claude-analyze",
-        "name": "Analyze Media Placement — Claude",
+        "name": "Analyze Media Placement \u2014 Claude",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2441,13 +2458,13 @@
           "sendBody": true,
           "contentType": "raw",
           "rawContentType": "application/json",
-          "body": "={{ JSON.stringify({ model: 'claude-opus-4-7', max_tokens: 16000, system: 'You generate structured asset prompt arrays for a YouTube documentary production pipeline. Output only valid JSON arrays, no markdown.', messages: [{ role: 'user', content: 'Based on this visual prompts table and placement analysis, generate four JSON arrays:\\n\\n1. IMAGE_PROMPTS: array of {index: N, timestamp: \"MM:SS\", nb2_prompt: {12-field NB2 JSON}, filename: \"img_NNNN.png\"}\\n   NB2 locked fields: style:\"Photorealistic, cinematic, 8K\", color_palette:[\"cinematic teal-orange desaturation\",\"deep shadow accent\",\"warm ochre highlights\"], lighting:\"golden hour sidelighting or deep chiaroscuro shadow\", mood:\"ancient, mysterious, slightly ominous\", negative_constraints:[\"no modern elements\",\"no flat lighting\",\"no extra limbs\",\"no motion blur\"]\\n\\n2. VIDEO_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: 8, veo_prompt: \"[Cinematography]+[Subject]+[Action]+[Context]+[Style] 100-150 words with Dialogue: SFX: Ambient: audio layers\", filename: \"vid_NNNN.mp4\"}\\n\\n3. MUSIC_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, type: \"underscore\"|\"peak\"|\"outro\", prompt: \"ElevenLabs sound generation prompt for cinematic background music\", filename: \"music_NN.mp3\"}\\n\\n4. SFX_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, prompt: \"ElevenLabs sound generation prompt for sound effect\", filename: \"sfx_NN.mp3\"}\\n\\nVISUAL PROMPTS TABLE:\\n' + $json.visualPromptsTable + '\\n\\nPLACEMENT ANALYSIS:\\n' + $('Analyze Media Placement — Claude').item.json.content[0].text }] }) }}",
+          "body": "={{ JSON.stringify({ model: 'claude-opus-4-7', max_tokens: 16000, system: 'You generate structured asset prompt arrays for a YouTube documentary production pipeline. Output only valid JSON arrays, no markdown.', messages: [{ role: 'user', content: 'Based on this visual prompts table and placement analysis, generate four JSON arrays:\\n\\n1. IMAGE_PROMPTS: array of {index: N, timestamp: \"MM:SS\", nb2_prompt: {12-field NB2 JSON}, filename: \"img_NNNN.png\"}\\n   NB2 locked fields: style:\"Photorealistic, cinematic, 8K\", color_palette:[\"cinematic teal-orange desaturation\",\"deep shadow accent\",\"warm ochre highlights\"], lighting:\"golden hour sidelighting or deep chiaroscuro shadow\", mood:\"ancient, mysterious, slightly ominous\", negative_constraints:[\"no modern elements\",\"no flat lighting\",\"no extra limbs\",\"no motion blur\"]\\n\\n2. VIDEO_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: 8, veo_prompt: \"[Cinematography]+[Subject]+[Action]+[Context]+[Style] 100-150 words with Dialogue: SFX: Ambient: audio layers\", filename: \"vid_NNNN.mp4\"}\\n\\n3. MUSIC_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, type: \"underscore\"|\"peak\"|\"outro\", prompt: \"ElevenLabs sound generation prompt for cinematic background music\", filename: \"music_NN.mp3\"}\\n\\n4. SFX_PROMPTS: array of {index: N, timestamp: \"MM:SS\", duration_seconds: N, prompt: \"ElevenLabs sound generation prompt for sound effect\", filename: \"sfx_NN.mp3\"}\\n\\nVISUAL PROMPTS TABLE:\\n' + $json.visualPromptsTable + '\\n\\nPLACEMENT ANALYSIS:\\n' + $('Analyze Media Placement \u2014 Claude').item.json.content[0].text }] }) }}",
           "options": {
             "timeout": 120000
           }
         },
         "id": "node-17-claude-prompts",
-        "name": "Generate Asset Prompts — Claude",
+        "name": "Generate Asset Prompts \u2014 Claude",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2490,7 +2507,7 @@
       {
         "parameters": {
           "resume": "form",
-          "formTitle": "Ruins Untold — Asset Prompts Review",
+          "formTitle": "Ruins Untold \u2014 Asset Prompts Review",
           "formDescription": "={{ '**TOPIC:** ' + $json.TOPIC + '\\n\\n**Asset counts ready for generation:**\\n- Images (NanoBanana 2): ' + $json.imageTotalCount + '\\n- Videos (Veo 3.1 Fast): ' + $json.videoTotalCount + '\\n- Music cues (ElevenLabs): ' + $json.musicTotalCount + '\\n- SFX cues (ElevenLabs): ' + $json.sfxTotalCount + '\\n\\n**All prompts saved at:**\\n`' + $json.projectDir + '/scripts/asset_prompts.json`\\n\\nReview the prompts file before approving generation. This step commits to API costs.' }}",
           "formFields": {
             "values": [
@@ -2500,7 +2517,7 @@
                 "fieldOptions": {
                   "values": [
                     {
-                      "option": "approve — begin generation"
+                      "option": "approve \u2014 begin generation"
                     },
                     {
                       "option": "revise prompts"
@@ -2612,7 +2629,7 @@
           }
         },
         "id": "node-33-gen-music",
-        "name": "Generate Music — ElevenLabs",
+        "name": "Generate Music \u2014 ElevenLabs",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2692,7 +2709,7 @@
           }
         },
         "id": "node-36-gen-sfx",
-        "name": "Generate SFX — ElevenLabs",
+        "name": "Generate SFX \u2014 ElevenLabs",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
@@ -2751,7 +2768,7 @@
       {
         "parameters": {
           "resume": "form",
-          "formTitle": "Ruins Untold — Final Assets Review",
+          "formTitle": "Ruins Untold \u2014 Final Assets Review",
           "formDescription": "={{ '**TOPIC:** ' + $json.TOPIC + '\\n\\n**Generated assets are in:** `' + $json.projectDir + '`\\n\\n**Asset summary:**\\n- Images: `' + $json.projectDir + '/images/`\\n- Videos: `' + $json.projectDir + '/videos/`\\n- Music: `' + $json.projectDir + '/music/`\\n- SFX: `' + $json.projectDir + '/sfx/`\\n- Voiceover: `' + $json.projectDir + '/audio/voiceover.mp3`\\n\\nReview all assets before approving FFMpeg assembly. Assembly is the final step.' }}",
           "formFields": {
             "values": [
@@ -2761,10 +2778,10 @@
                 "fieldOptions": {
                   "values": [
                     {
-                      "option": "approve — assemble final video"
+                      "option": "approve \u2014 assemble final video"
                     },
                     {
-                      "option": "hold — do not assemble"
+                      "option": "hold \u2014 do not assemble"
                     }
                   ]
                 },
@@ -2853,7 +2870,7 @@
           "command": "={{ \"bash \\\"\" + $json.scriptPath + \"\\\" 2>&1\" }}"
         },
         "id": "node-44-run-ffmpeg",
-        "name": "Assemble Final Video — FFMpeg",
+        "name": "Assemble Final Video \u2014 FFMpeg",
         "type": "n8n-nodes-base.executeCommand",
         "typeVersion": 1,
         "position": [
@@ -2929,8 +2946,8 @@
       {
         "parameters": {
           "resume": "form",
-          "formTitle": "Ruins Untold — Manual Generation Ready?",
-          "formDescription": "={{ '**Prompt files written to project folder:**\\n\\n📄 `' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/image_prompts.xlsx`\\n📄 `' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/video_prompts.xlsx`\\n\\n**Generate your images and videos using those prompts, then place the files here:**\\n\\n🖼️  Images → `' + $('Parse Asset Prompts').item.json.projectDir + '/images/` (filenames: img_0001.png, img_0002.png…)\\n🎬  Videos → `' + $('Parse Asset Prompts').item.json.projectDir + '/videos/` (filenames: vid_0001.mp4, vid_0002.mp4…)\\n\\n**Music and SFX are being auto-generated in parallel** — wait for this form to appear before submitting, as that confirms both audio tracks are ready.\\n\\nSubmit once all image and video files are in place.' }}",
+          "formTitle": "Ruins Untold \u2014 Manual Generation Ready?",
+          "formDescription": "={{ '**Prompt files written to project folder:**\\n\\n\ud83d\udcc4 `' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/image_prompts.xlsx`\\n\ud83d\udcc4 `' + $('Parse Asset Prompts').item.json.projectDir + '/scripts/video_prompts.xlsx`\\n\\n**Generate your images and videos using those prompts, then place the files here:**\\n\\n\ud83d\uddbc\ufe0f  Images \u2192 `' + $('Parse Asset Prompts').item.json.projectDir + '/images/` (filenames: img_0001.png, img_0002.png\u2026)\\n\ud83c\udfac  Videos \u2192 `' + $('Parse Asset Prompts').item.json.projectDir + '/videos/` (filenames: vid_0001.mp4, vid_0002.mp4\u2026)\\n\\n**Music and SFX are being auto-generated in parallel** \u2014 wait for this form to appear before submitting, as that confirms both audio tracks are ready.\\n\\nSubmit once all image and video files are in place.' }}",
           "formFields": {
             "values": [
               {
@@ -2939,10 +2956,10 @@
                 "fieldOptions": {
                   "values": [
                     {
-                      "option": "All files are in place — proceed to assembly"
+                      "option": "All files are in place \u2014 proceed to assembly"
                     },
                     {
-                      "option": "Not ready yet — cancel"
+                      "option": "Not ready yet \u2014 cancel"
                     }
                   ]
                 },
@@ -2958,7 +2975,7 @@
           "options": {}
         },
         "id": "node-38b-manual-wait",
-        "name": "Wait — Manual Image & Video Generation",
+        "name": "Wait \u2014 Manual Image & Video Generation",
         "type": "n8n-nodes-base.wait",
         "typeVersion": 1,
         "position": [
@@ -2978,7 +2995,7 @@
           }
         },
         "id": "node-23-xlsx-images",
-        "name": "Write Image Prompts — XLSX",
+        "name": "Write Image Prompts \u2014 XLSX",
         "type": "n8n-nodes-base.spreadsheetFile",
         "typeVersion": 2,
         "position": [
@@ -3011,7 +3028,7 @@
           }
         },
         "id": "node-25-xlsx-videos",
-        "name": "Write Video Prompts — XLSX",
+        "name": "Write Video Prompts \u2014 XLSX",
         "type": "n8n-nodes-base.spreadsheetFile",
         "typeVersion": 2,
         "position": [
@@ -3061,14 +3078,14 @@
         "main": [
           [
             {
-              "node": "Generate Script — Claude",
+              "node": "Generate Script \u2014 Claude",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Generate Script — Claude": {
+      "Generate Script \u2014 Claude": {
         "main": [
           [
             {
@@ -3116,21 +3133,21 @@
         "main": [
           [
             {
-              "node": "Generate Voiceover — ElevenLabs",
+              "node": "Generate Voiceover \u2014 ElevenLabs",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Revise Script — Claude",
+              "node": "Revise Script \u2014 Claude",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Revise Script — Claude": {
+      "Revise Script \u2014 Claude": {
         "main": [
           [
             {
@@ -3163,7 +3180,7 @@
           ]
         ]
       },
-      "Generate Voiceover — ElevenLabs": {
+      "Generate Voiceover \u2014 ElevenLabs": {
         "main": [
           [
             {
@@ -3200,32 +3217,32 @@
         "main": [
           [
             {
-              "node": "Analyze Media Placement — Claude",
+              "node": "Analyze Media Placement \u2014 Claude",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Generate Voiceover — ElevenLabs",
+              "node": "Generate Voiceover \u2014 ElevenLabs",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Analyze Media Placement — Claude": {
+      "Analyze Media Placement \u2014 Claude": {
         "main": [
           [
             {
-              "node": "Generate Asset Prompts — Claude",
+              "node": "Generate Asset Prompts \u2014 Claude",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Generate Asset Prompts — Claude": {
+      "Generate Asset Prompts \u2014 Claude": {
         "main": [
           [
             {
@@ -3290,7 +3307,7 @@
           ],
           [
             {
-              "node": "Generate Asset Prompts — Claude",
+              "node": "Generate Asset Prompts \u2014 Claude",
               "type": "main",
               "index": 0
             }
@@ -3301,7 +3318,7 @@
         "main": [
           [
             {
-              "node": "Generate Music — ElevenLabs",
+              "node": "Generate Music \u2014 ElevenLabs",
               "type": "main",
               "index": 0
             }
@@ -3315,7 +3332,7 @@
           ]
         ]
       },
-      "Generate Music — ElevenLabs": {
+      "Generate Music \u2014 ElevenLabs": {
         "main": [
           [
             {
@@ -3341,7 +3358,7 @@
         "main": [
           [
             {
-              "node": "Generate SFX — ElevenLabs",
+              "node": "Generate SFX \u2014 ElevenLabs",
               "type": "main",
               "index": 0
             }
@@ -3355,7 +3372,7 @@
           ]
         ]
       },
-      "Generate SFX — ElevenLabs": {
+      "Generate SFX \u2014 ElevenLabs": {
         "main": [
           [
             {
@@ -3381,7 +3398,7 @@
         "main": [
           [
             {
-              "node": "Wait — Manual Image & Video Generation",
+              "node": "Wait \u2014 Manual Image & Video Generation",
               "type": "main",
               "index": 0
             }
@@ -3437,14 +3454,14 @@
         "main": [
           [
             {
-              "node": "Assemble Final Video — FFMpeg",
+              "node": "Assemble Final Video \u2014 FFMpeg",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Assemble Final Video — FFMpeg": {
+      "Assemble Final Video \u2014 FFMpeg": {
         "main": [
           [
             {
@@ -3459,7 +3476,7 @@
         "main": [
           [
             {
-              "node": "Write Image Prompts — XLSX",
+              "node": "Write Image Prompts \u2014 XLSX",
               "type": "main",
               "index": 0
             }
@@ -3470,7 +3487,7 @@
         "main": [
           [
             {
-              "node": "Write Video Prompts — XLSX",
+              "node": "Write Video Prompts \u2014 XLSX",
               "type": "main",
               "index": 0
             }
@@ -3499,7 +3516,7 @@
           ]
         ]
       },
-      "Wait — Manual Image & Video Generation": {
+      "Wait \u2014 Manual Image & Video Generation": {
         "main": [
           [
             {
@@ -3510,7 +3527,7 @@
           ]
         ]
       },
-      "Write Image Prompts — XLSX": {
+      "Write Image Prompts \u2014 XLSX": {
         "main": [
           [
             {
@@ -3532,7 +3549,7 @@
           ]
         ]
       },
-      "Write Video Prompts — XLSX": {
+      "Write Video Prompts \u2014 XLSX": {
         "main": [
           [
             {
