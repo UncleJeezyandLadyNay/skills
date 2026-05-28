@@ -425,7 +425,7 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({\n  prompt:\n    \"You are a video post-production supervisor for Ruins Untold YouTube channel. Analyze scripts and identify precise placement cues for visual media, background music, and sound effects. Output structured JSON only.\"\n    + \"\\n\\n---\\n\\n\"\n    + 'Analyze this script and identify where images, video clips, background music, and sound effects should be placed. For each cue output a JSON array with objects: {type: \"image\"|\"video\"|\"music\"|\"sfx\", timestamp: \"MM:SS\", duration_seconds: N, description: \"...\", mood: \"...\", script_line: \"first few words of line\"}.\\n\\nRules:\\n- Images: for slower, static moments or evidence presentation\\n- Videos: for dramatic reveals, establishing shots, action sequences\\n- Music: background scoring (note: underscore, peak, outro)\\n- SFX: punctuation sounds (wind, impact, rumble, breath)\\n\\nSCRIPT:\\n' + $json.scriptText\n}) }}",
+        "body": "={{ JSON.stringify({\n  system: \"You are the lead editor for Ruins Untold, a YouTube investigative documentary channel covering ancient mysteries and suppressed history. You generate precise visual media placement plans from voiceover scripts. Output only valid JSON arrays \\u2014 no markdown, no explanation.\",\n  prompt: \"Analyze this voiceover script and produce a complete visual media placement plan that covers every second of the episode from 0:00 to {{ $json.durationMMSS }}.\\n\\nTECHNICAL SPECS:\\n  Voiceover duration : {{ $json.durationSeconds }}s ({{ $json.durationMMSS }})\\n  Total word count   : {{ $json.wordCount }} words\\n  Speaking rate      : ~{{ $json.wpm }} words/minute\\n  Scene length       : 5\\u201310 seconds per visual asset (no shorter, no longer)\\n  J-cut offset       : 1.5 seconds \\u2014 VIDEO clips start 1.5s BEFORE the script line they illustrate\\n  Coverage           : every second must have a visual (images or video \\u2014 no gaps)\\n\\nASSET TYPE RULES:\\n  image  \\u2014 evidence reveals, artifact close-ups, maps, text citations, slow analytical moments\\n  video  \\u2014 opening hook, dramatic reveals, establishing shots, discovery sequences, transitions\\n  music  \\u2014 background scoring: \\\"underscore\\\" (continuous low), \\\"peak\\\" (swell at revelation), \\\"outro\\\" (final 30s fade)\\n  sfx    \\u2014 punctuation sounds: stone grinding, wind, echo, heartbeat, distant rumble, breath\\n\\nJ-CUT CALCULATION (videos only):\\n  script_timestamp_s = estimated time when this line is spoken\\n  visual_start_s     = script_timestamp_s - 1.5  (minimum 0)\\n  Images play on-beat: visual_start_s = script_timestamp_s\\n\\nTIMESTAMP ESTIMATION:\\n  Use cumulative word position: script_timestamp_s \\u2248 (words_so_far / total_words) \\u00d7 duration_seconds\\n  Round to 1 decimal place.\\n\\nOUTPUT FORMAT \\u2014 return a single JSON array, each object exactly:\\n{\\n  \\\"type\\\": \\\"image\\\" | \\\"video\\\" | \\\"music\\\" | \\\"sfx\\\",\\n  \\\"script_timestamp_s\\\": <float>,\\n  \\\"visual_start_s\\\": <float>,\\n  \\\"duration_s\\\": <5\\u201310 for image/video; variable for music/sfx>,\\n  \\\"timestamp\\\": \\\"<MM:SS of visual_start_s>\\\",\\n  \\\"script_line\\\": \\\"<first 8 words of the line this asset covers>\\\",\\n  \\\"description\\\": \\\"<specific visual or audio description>\\\",\\n  \\\"mood\\\": \\\"<emotional tone>\\\",\\n  \\\"placement\\\": \\\"image\\\" | \\\"video\\\" | \\\"underscore\\\" | \\\"peak\\\" | \\\"outro\\\" | \\\"sfx\\\"\\n}\\n\\nSCRIPT ({{ $json.wordCount }} words \\u2014 {{ $json.durationSeconds }}s total):\\n{{ $json.scriptText }}\"\n}) }}",
         "options": {
           "timeout": 600000
         }
@@ -435,7 +435,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
-        3840,
+        4320,
         304
       ]
     },
@@ -467,7 +467,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
-        4080,
+        4560,
         304
       ]
     },
@@ -480,7 +480,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4320,
+        4800,
         304
       ]
     },
@@ -493,7 +493,7 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        4560,
+        5040,
         304
       ]
     },
@@ -535,7 +535,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        4800,
+        5280,
         304
       ],
       "webhookId": "ruins-prompts-review"
@@ -569,7 +569,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        5040,
+        5520,
         304
       ]
     },
@@ -596,7 +596,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6240,
+        6720,
         512
       ]
     },
@@ -638,7 +638,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        6480,
+        6960,
         512
       ],
       "webhookId": "ruins-assets-review"
@@ -672,7 +672,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        6720,
+        7200,
         512
       ]
     },
@@ -685,7 +685,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6960,
+        7440,
         512
       ]
     },
@@ -698,7 +698,7 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        7200,
+        7680,
         512
       ]
     },
@@ -711,7 +711,7 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        7440,
+        7920,
         512
       ]
     },
@@ -724,7 +724,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3,
       "position": [
-        7680,
+        8160,
         512
       ]
     },
@@ -737,7 +737,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5280,
+        5760,
         144
       ]
     },
@@ -750,7 +750,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6000,
+        6480,
         144
       ]
     },
@@ -763,7 +763,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5280,
+        5760,
         608
       ]
     },
@@ -776,7 +776,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5280,
+        5760,
         800
       ]
     },
@@ -818,7 +818,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        6720,
+        7200,
         304
       ],
       "webhookId": "ruins-manual-generation-wait"
@@ -838,7 +838,7 @@
       "type": "n8n-nodes-base.spreadsheetFile",
       "typeVersion": 2,
       "position": [
-        5520,
+        6000,
         144
       ]
     },
@@ -852,7 +852,7 @@
       "type": "n8n-nodes-base.writeBinaryFile",
       "typeVersion": 1,
       "position": [
-        5760,
+        6240,
         144
       ]
     },
@@ -871,7 +871,7 @@
       "type": "n8n-nodes-base.spreadsheetFile",
       "typeVersion": 2,
       "position": [
-        6240,
+        6720,
         144
       ]
     },
@@ -885,7 +885,7 @@
       "type": "n8n-nodes-base.writeBinaryFile",
       "typeVersion": 1,
       "position": [
-        6480,
+        6960,
         144
       ]
     },
@@ -936,7 +936,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4,
       "position": [
-        7920,
+        8400,
         512
       ],
       "parameters": {
@@ -1273,7 +1273,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5520,
+        6000,
         608
       ],
       "parameters": {
@@ -1287,7 +1287,7 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        5760,
+        6240,
         608
       ],
       "parameters": {
@@ -1300,7 +1300,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5520,
+        6000,
         800
       ],
       "parameters": {
@@ -1314,7 +1314,7 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        5760,
+        6240,
         800
       ],
       "parameters": {
@@ -1384,6 +1384,33 @@
       "parameters": {
         "mode": "runOnceForEachItem",
         "jsCode": "const allItems = $input.item.json.allChunkItems;\nreturn allItems.map(item => ({ json: item }));\n"
+      }
+    },
+    {
+      "id": "get-vo-duration",
+      "name": "Get Voiceover Duration",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        3720,
+        304
+      ],
+      "parameters": {
+        "command": "={{ 'ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 \"' + $('Set Project Variables').item.json.projectDir + '/audio/voiceover_final.mp3\" 2>/dev/null || echo 0' }}"
+      }
+    },
+    {
+      "id": "prep-media-analysis",
+      "name": "Prep Media Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3840,
+        304
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const durationRaw = $input.item.json.stdout || '';\nconst duration    = parseFloat(durationRaw.trim()) || 0;\nconst mm          = Math.floor(duration / 60);\nconst ss          = Math.round(duration % 60);\nconst durationMMSS = `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;\n\nconst projectVars  = $('Set Project Variables').item.json;\nconst scriptParsed = $('Parse Script Response').item.json;\n\nconst scriptText   = scriptParsed.scriptText || '';\nconst wordCount    = scriptText.split(/\\s+/).filter(w => w.length > 0).length;\nconst wpm          = duration > 0 ? Math.round((wordCount / duration) * 60) : 150;\nconst audioDir     = projectVars.projectDir + '/audio';\n\nreturn [{\n  json: {\n    ...projectVars,\n    scriptText,\n    visualPromptsTable: scriptParsed.visualPromptsTable || '',\n    wordCount,\n    durationSeconds: Math.round(duration * 10) / 10,\n    durationMMSS,\n    wpm,\n    audioDir,\n    voiceoverPath: audioDir + '/voiceover_final.mp3'\n  }\n}];\n"
       }
     }
   ],
@@ -1520,7 +1547,7 @@
       "main": [
         [
           {
-            "node": "Analyze Media Placement \u2014 Claude",
+            "node": "Get Voiceover Duration",
             "type": "main",
             "index": 0
           }
@@ -2121,6 +2148,28 @@
         [
           {
             "node": "Split Chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Voiceover Duration": {
+      "main": [
+        [
+          {
+            "node": "Prep Media Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Media Analysis": {
+      "main": [
+        [
+          {
+            "node": "Analyze Media Placement \u2014 Claude",
             "type": "main",
             "index": 0
           }
