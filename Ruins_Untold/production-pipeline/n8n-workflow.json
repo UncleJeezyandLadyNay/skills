@@ -186,7 +186,7 @@
     },
     {
       "parameters": {
-        "command": "={{ \"cat > \\\"\" + $json.projectDir + \"/scripts/full_output.md\\\" << 'RUINS_EOF'\\n\" + $json.fullOutput + \"\\nRUINS_EOF\\necho \\\"Script saved.\\\"\" }}"
+        "command": "={{ 'mkdir -p \"' + $json.projectDir + '/scripts\" && cat > \"' + $json.projectDir + '/scripts/full_output.md\" << \\'RUINS_EOF\\'\\n' + $json.fullOutput + '\\nRUINS_EOF\\necho \"\u2713 Script saved: ' + $json.projectDir + '/scripts/full_output.md\"' }}"
       },
       "id": "node-06-save-script",
       "name": "Save Script to File",
@@ -201,7 +201,7 @@
       "parameters": {
         "resume": "form",
         "formTitle": "RUINS UNTOLD \u2014 SCRIPT AUTHORIZATION",
-        "formDescription": "={{ 'CASE FILE: ' + $('Parse Script Response').item.json.TOPIC + '\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'ESTIMATED RUNTIME: ~' + $('Parse Script Response').item.json.estimatedMinutes + ' minutes\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n\\n'+ 'SCRIPT EXCERPT (first 3000 characters):\\n\\n'+ ($('Parse Script Response').item.json.scriptText || '').substring(0, 3000)+ '\\n\\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'FULL SCRIPT \u2192 ' + $('Parse Script Response').item.json.projectDir + '/scripts/full_output.md\\n'+ 'Review the complete document before issuing authorization.'  }}",
+        "formDescription": "={{ 'CASE FILE: ' + $('Parse Script Response').item.json.TOPIC + '\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'ESTIMATED RUNTIME : ~' + $('Parse Script Response').item.json.estimatedMinutes + ' minutes\\n'+ 'WORD COUNT        : ' + $('Parse Script Response').item.json.scriptText.split(' ').length + ' words\\n'+ '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\\n'+ 'FULL SCRIPT \u2192 ' + $('Parse Script Response').item.json.projectDir + '/scripts/full_output.md\\n\\n'+ 'Open the file above to review before authorizing.' }}",
         "formFields": {
           "values": [
             {
@@ -320,7 +320,7 @@
     },
     {
       "parameters": {
-        "command": "={{ \"cat > \\\"\" + $json.projectDir + \"/scripts/full_output.md\\\" << 'RUINS_EOF'\\n\" + $json.fullOutput + \"\\nRUINS_EOF\\necho \\\"Revised script saved.\\\"\" }}"
+        "command": "={{ 'mkdir -p \"' + $json.projectDir + '/scripts\" && cat > \"' + $json.projectDir + '/scripts/full_output.md\" << \\'RUINS_EOF\\'\\n' + $json.fullOutput + '\\nRUINS_EOF\\necho \"\u2713 Revised script saved.\"' }}"
       },
       "id": "node-11-save-revised-script",
       "name": "Save Revised Script",
