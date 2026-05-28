@@ -1228,72 +1228,7 @@
         600
       ],
       "parameters": {
-        "jsCode": "\nconst item       = $input.item.json;\nconst staticData = $getWorkflowStaticData('global');\n\nconst requestBody = {\n  text:       item.chunkText,\n  model_id:   'eleven_v3',\n  voice_settings: {\n    stability:          0.5,\n    similarity_boost:   0.75,\n    style:              0.35,\n    use_speaker_boost:  true\n  }\n};\n\n// Inject previous_request_ids for every chunk after the first\nif (!item.isFirstChunk && staticData.ruinsVoicePrevIds && staticData.ruinsVoicePrevIds.length > 0) {\n  requestBody.previous_request_ids = staticData.ruinsVoicePrevIds.slice(-3); // ElevenLabs max = 3\n}\n\nreturn [{\n  json: {\n    ...item,\n    elevenLabsBody:   JSON.stringify(requestBody),\n    includedPrevIds:  requestBody.previous_request_ids || []\n  }\n}];\n"
-      }
-    },
-    {
-      "id": "generate-chunk-audio",
-      "name": "Generate Chunk Audio",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        3120,
-        600
-      ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "elevenlabs-api-key",
-          "name": "ElevenLabs API Key"
-        }
-      },
-      "parameters": {
-        "method": "POST",
-        "url": "=https://api.elevenlabs.io/v1/text-to-speech/{{ $json.VOICE_ID }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "xi-api-key",
-              "value": "={{ $credentials.httpHeaderAuth.value }}"
-            },
-            {
-              "name": "content-type",
-              "value": "application/json"
-            },
-            {
-              "name": "accept",
-              "value": "audio/mpeg"
-            }
-          ]
-        },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/json",
-        "body": "={{ $json.elevenLabsBody }}",
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "file",
-              "fullResponse": true
-            }
-          },
-          "timeout": 120000
-        }
-      }
-    },
-    {
-      "id": "store-request-id",
-      "name": "Store Request ID",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        3360,
-        600
-      ],
-      "parameters": {
-        "jsCode": "\nconst httpItem   = $input.item;\nconst chunkMeta  = $('Prepare Chunk Request').item.json;\nconst staticData = $getWorkflowStaticData('global');\n\n// ElevenLabs returns the ID in 'request-id' response header\nconst headers   = httpItem.json.headers || httpItem.json || {};\nconst requestId =\n  headers['request-id']       ||\n  headers['x-request-id']     ||\n  headers['history-item-id']  ||\n  '';\n\nif (requestId) {\n  if (!staticData.ruinsVoicePrevIds) staticData.ruinsVoicePrevIds = [];\n  staticData.ruinsVoicePrevIds.push(requestId);\n  // Keep only the last 3 (ElevenLabs maximum)\n  if (staticData.ruinsVoicePrevIds.length > 3) {\n    staticData.ruinsVoicePrevIds = staticData.ruinsVoicePrevIds.slice(-3);\n  }\n}\n\n// Merge chunk metadata back in (HTTP node replaces $json with response data)\nreturn [{\n  json: {\n    ...chunkMeta,\n    requestId:    requestId || '(header not returned)',\n    chainedIds:   staticData.ruinsVoicePrevIds || []\n  },\n  binary: httpItem.binary     // pass the MP3 binary forward\n}];\n"
+        "jsCode": "\nconst item       = $input.item.json;\nconst staticData = $getWorkflowStaticData('global');\n\n// \u2500\u2500 Change this to any kie.ai whitelisted ElevenLabs voice name \u2500\u2500\nconst KIE_VOICE = 'Jeff';   // Jeff: Classy, Resonating and Strong\n\nconst kieInput = {\n  text:             item.chunkText,\n  voice:            KIE_VOICE,\n  stability:        0.5,\n  similarity_boost: 0.75,\n  speed:            1\n};\n\n// Inject previous_request_ids for chunks after the first\nif (!item.isFirstChunk && staticData.ruinsVoicePrevIds && staticData.ruinsVoicePrevIds.length > 0) {\n  kieInput.previous_request_ids = staticData.ruinsVoicePrevIds.slice(-3);\n}\n\nconst kieBody = {\n  model: 'elevenlabs/text-to-speech-multilingual-v2',\n  input: kieInput\n};\n\nreturn [{\n  json: {\n    ...item,\n    kieBody:         JSON.stringify(kieBody),\n    kieVoice:        KIE_VOICE,\n    includedPrevIds: kieInput.previous_request_ids || []\n  }\n}];\n"
       }
     },
     {
@@ -1302,12 +1237,185 @@
       "type": "n8n-nodes-base.writeBinaryFile",
       "typeVersion": 1,
       "position": [
-        3600,
+        4800,
         600
       ],
       "parameters": {
         "fileName": "={{ $json.filename }}",
         "options": {}
+      }
+    },
+    {
+      "id": "submit-to-kieai",
+      "name": "Submit to Kie.ai",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3120,
+        600
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "kieai-api-key",
+          "name": "Kie.ai API Key"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $credentials.httpHeaderAuth.value }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.kieBody }}",
+        "options": {
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "extract-task-id",
+      "name": "Extract Task ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        600
+      ],
+      "parameters": {
+        "jsCode": "\nconst response  = $input.item.json;\nconst chunkMeta = $('Prepare Chunk Request').item.json;\n\nif (response.code !== 200) {\n  throw new Error(`Kie.ai createTask failed (chunk ${chunkMeta.chunkNumber}): ${response.msg}`);\n}\n\nconst taskId = response.data.taskId;\n\nreturn [{\n  json: {\n    ...chunkMeta,\n    kieTaskId: taskId\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "wait-for-kieai",
+      "name": "Wait for Kie.ai",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3600,
+        600
+      ],
+      "webhookId": "wait-kieai-poll",
+      "parameters": {
+        "resume": "timeInterval",
+        "unit": "seconds",
+        "amount": 10
+      }
+    },
+    {
+      "id": "poll-kieai-status",
+      "name": "Poll Kie.ai Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3840,
+        600
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "kieai-api-key",
+          "name": "Kie.ai API Key"
+        }
+      },
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $('Extract Task ID').item.json.kieTaskId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $credentials.httpHeaderAuth.value }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "kieai-complete-if",
+      "name": "Kie.ai Complete?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        4080,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-kieai-done",
+              "leftValue": "={{ $json.data.state }}",
+              "rightValue": "success",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "store-id-audio-url",
+      "name": "Store ID & Get Audio URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4320,
+        600
+      ],
+      "parameters": {
+        "jsCode": "\nconst pollResponse = $input.item.json;\nconst chunkMeta    = $('Prepare Chunk Request').item.json;\nconst staticData   = $getWorkflowStaticData('global');\n\n// Parse resultJson to find ElevenLabs request_id if exposed\nlet resultJson = {};\ntry {\n  resultJson = JSON.parse(pollResponse.data.resultJson || '{}');\n} catch(e) {}\n\n// ElevenLabs history_item_id is the value to chain as previous_request_ids\n// Kie.ai may expose it in resultJson; fallback to taskId\nconst requestId =\n  resultJson.request_id     ||\n  resultJson.history_item_id||\n  resultJson.requestId      ||\n  $('Extract Task ID').item.json.kieTaskId;  // fallback: taskId\n\n// Chain into static data (max 3, ElevenLabs limit)\nif (!staticData.ruinsVoicePrevIds) staticData.ruinsVoicePrevIds = [];\nstaticData.ruinsVoicePrevIds.push(requestId);\nif (staticData.ruinsVoicePrevIds.length > 3) {\n  staticData.ruinsVoicePrevIds = staticData.ruinsVoicePrevIds.slice(-3);\n}\n\nconst audioUrl = (pollResponse.data.resultUrls || [])[0] || '';\n\nif (!audioUrl) {\n  throw new Error(`Chunk ${chunkMeta.chunkNumber}: no audio URL in kie.ai response`);\n}\n\nreturn [{\n  json: {\n    ...chunkMeta,\n    kieRequestId: requestId,\n    audioUrl:     audioUrl,\n    chainedIds:   [...staticData.ruinsVoicePrevIds]\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "download-chunk-audio",
+      "name": "Download Chunk Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4560,
+        600
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.audioUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 60000
+        }
       }
     }
   ],
@@ -1952,29 +2060,7 @@
       "main": [
         [
           {
-            "node": "Generate Chunk Audio",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generate Chunk Audio": {
-      "main": [
-        [
-          {
-            "node": "Store Request ID",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Store Request ID": {
-      "main": [
-        [
-          {
-            "node": "Save Chunk Audio",
+            "node": "Submit to Kie.ai",
             "type": "main",
             "index": 0
           }
@@ -1986,6 +2072,90 @@
         [
           {
             "node": "Split Chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit to Kie.ai": {
+      "main": [
+        [
+          {
+            "node": "Extract Task ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Task ID": {
+      "main": [
+        [
+          {
+            "node": "Wait for Kie.ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Kie.ai": {
+      "main": [
+        [
+          {
+            "node": "Poll Kie.ai Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poll Kie.ai Status": {
+      "main": [
+        [
+          {
+            "node": "Kie.ai Complete?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kie.ai Complete?": {
+      "main": [
+        [
+          {
+            "node": "Store ID & Get Audio URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Kie.ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store ID & Get Audio URL": {
+      "main": [
+        [
+          {
+            "node": "Download Chunk Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Chunk Audio": {
+      "main": [
+        [
+          {
+            "node": "Save Chunk Audio",
             "type": "main",
             "index": 0
           }
