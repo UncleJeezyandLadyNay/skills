@@ -2180,7 +2180,7 @@
         304
       ],
       "parameters": {
-        "command": "={{ 'printf \"RUINS UNTOLD — SCRIPT REVIEW FORM\\n\" > /Users/jneal/n8n_projects/SCRIPT_REVIEW_FORM.txt && printf \"==============================================\\n\" >> /Users/jneal/n8n_projects/SCRIPT_REVIEW_FORM.txt && printf \"URL: http://localhost:5678/form-waiting/' + $execution.id + '\\n\" >> /Users/jneal/n8n_projects/SCRIPT_REVIEW_FORM.txt && printf \"\\nOpen that URL in your browser to review and approve.\\nDo NOT cancel the n8n execution while reviewing.\\n\" >> /Users/jneal/n8n_projects/SCRIPT_REVIEW_FORM.txt && echo \"Form URL written\"' }}"
+        "command": "bash /Users/jneal/n8n_projects/get_review_url.sh"
       }
     }
   ],
